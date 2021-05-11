@@ -1,6 +1,6 @@
-# golekos
+# GOLEKOS - Kost Finder
 
-A new Flutter project.
+Aplikasi pencari kos
 
 ## Getting Started
 
