@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:golekos/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Dashboard extends StatefulWidget {
@@ -32,16 +33,16 @@ class _DashboardState extends State<Dashboard> {
                           children: [
                             Text(
                               "Hello,",
-                              style: GoogleFonts.poppins(fontSize: 22),
+                              style: orderRegular.copyWith(fontSize: 22),
                             ),
                             Text(
                               "Shayna Far",
-                              style: GoogleFonts.poppins(
+                              style: orderBold.copyWith(
                                   fontSize: 22, fontWeight: FontWeight.bold),
                             )
                           ],
                         )),
-                        // image user
+                    // image user
                     Container(
                       margin: EdgeInsets.only(top: 19),
                       height: 69,
@@ -53,6 +54,41 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                   ]),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 16, right: 16, top: 32),
+              width: double.infinity,
+              height: 55,
+              decoration: BoxDecoration(
+                color: Color(0xffFFFFFF),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Row(children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                        hintText: "Find your next kos",
+                        hintStyle: orderLight.copyWith(
+                            color: Color(0xffA5A5A5), fontSize: 16),
+                        border: InputBorder.none),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {},
+                )
+              ]),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 30),
+              height: 97,
+              width: 331,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/tips.png'),
+                ),
+              ),
             )
           ],
         ),
