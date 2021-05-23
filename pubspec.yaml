@@ -44,6 +44,7 @@ flutter:
     - assets/svg/
     - assets/images/
     - assets/images/payment/
+    - assets/images/sign_in/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
