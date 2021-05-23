@@ -19,7 +19,17 @@ TextStyle orderRegular = GoogleFonts.poppins(
   fontWeight: FontWeight.w400,
 );
 
+TextStyle orderMedium = GoogleFonts.poppins(
+  fontSize: 14,
+  fontWeight: FontWeight.w500,
+);
+
 TextStyle orderBold = GoogleFonts.poppins(
   fontSize: 14,
   fontWeight: FontWeight.w700,
+);
+
+TextStyle orderSemiBold = GoogleFonts.poppins(
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
 );
