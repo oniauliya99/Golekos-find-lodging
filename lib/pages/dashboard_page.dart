@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:golekos/theme.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:golekos/widgets/list_boarding_houses.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -83,13 +83,25 @@ class _DashboardState extends State<Dashboard> {
             Container(
               margin: EdgeInsets.only(top: 30),
               height: 97,
-              width: 331,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/tips.png'),
                 ),
               ),
-            )
+            ),
+            Padding(
+              padding:
+                  EdgeInsets.only(left: 16, bottom: 19, top: 29, right: 10),
+              child: Text(
+                "Most People Go",
+                style: orderBold.copyWith(
+                    fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
+            BoardingHouses(),
+            BoardingHouses(),
+            BoardingHouses(),
+            BoardingHouses(),
           ],
         ),
       ),
