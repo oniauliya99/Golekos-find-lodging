@@ -81,6 +81,55 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 30),
+              child: Text(
+                'One more step to register an account',
+                style: orderRegular.copyWith(fontSize: 15, color: Colors.grey),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, top: 10),
+              height: 65,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                color: Color(0XFF29D5F8),
+                child: ListTile(
+                  title: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          'Sign up now',
+                          style: orderRegular.copyWith(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 130),
+              child: Text(
+                'You are completely safe',
+                style: orderBold.copyWith(fontSize: 15, color: Colors.black),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                'Read Our Terms & Conditions',
+                style: orderRegular.copyWith(
+                    fontSize: 15, color: Color(0XFF7041EE)),
+              ),
+            ),
           ],
         ),
       ),
