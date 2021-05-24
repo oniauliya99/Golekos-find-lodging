@@ -31,35 +31,44 @@ class _LoginPageState extends State<LoginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 color: Colors.white,
-                child: ListTile(
-                  title: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Row(
                     children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/images/tips.png'),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 50),
-                              child: Text('Sign in as Guest ',
-                                  style: orderRegular.copyWith(
-                                    fontSize: 20,
-                                  )),
-                            ),
-                          ],
+                      SizedBox(
+                        width: 22,
+                      ),
+                      Image.asset(
+                        'assets/images/sign_in/logo.png',
+                        width: 24,
+                        height: 24,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(
+                        width: 46,
+                      ),
+                      Text(
+                        'Sign in as Guest',
+                        style: orderRegular.copyWith(
+                          fontSize: 20,
+                          color: Color(0xff2C2929),
                         ),
                       ),
                     ],
                   ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xffffffff),
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                  ),
                 ),
               ),
             ),
+
+            // SIGN IN WITH GOOGLE
+
             Container(
               margin: EdgeInsets.symmetric(horizontal: 40),
               height: 65,
@@ -67,33 +76,37 @@ class _LoginPageState extends State<LoginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 color: Colors.white,
-                child: ListTile(
-                  title: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Row(
                     children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/sign_in/logo.png'),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 50),
-                              child: Text(
-                                'Sign in with Google ',
-                                style: orderRegular.copyWith(
-                                    color: Color(0XFF4285F4), fontSize: 20),
-                              ),
-                            ),
-                          ],
+                      SizedBox(
+                        width: 22,
+                      ),
+                      Image.asset(
+                        'assets/images/sign_in/google.png',
+                        width: 24,
+                        height: 24,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(
+                        width: 32,
+                      ),
+                      Text(
+                        'Sign in with Google',
+                        style: orderRegular.copyWith(
+                          fontSize: 20,
+                          color: Color(0xff4285F4),
                         ),
                       ),
                     ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xffffffff),
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
                   ),
                 ),
               ),
