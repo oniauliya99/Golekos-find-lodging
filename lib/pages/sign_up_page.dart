@@ -125,7 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Container(
               alignment: Alignment.center,
               child: Text(
-                'Read Our Terms & Conditions',
+                'Read Our Terms & Conditions.',
                 style: orderRegular.copyWith(
                     fontSize: 15, color: Color(0XFF7041EE)),
               ),
