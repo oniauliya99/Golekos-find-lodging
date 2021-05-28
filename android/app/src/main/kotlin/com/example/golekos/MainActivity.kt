@@ -1,4 +1,4 @@
-package com.example.golekos
+package com.oritech.golekos
 
 import io.flutter.embedding.android.FlutterActivity
 
