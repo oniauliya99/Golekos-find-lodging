@@ -24,8 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  firebase_auth: ^1.2.0
+  firebase_core: ^1.2.0
   flutter_svg: ^0.22.0
   google_fonts: ^2.1.0
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
@@ -46,7 +49,7 @@ flutter:
     - assets/images/payment/
     - assets/images/sign_in/
     - assets/images/social/
-
+    - assets/images/gif/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
