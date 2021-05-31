@@ -108,3 +108,33 @@ Future<void> signOutGoogle() async {
 
   print("User Signed Out");
 }
+
+Future<User> signUp(String email, String password) async {
+  await Firebase.initializeApp();
+  try {
+    UserCredential result = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    User user = result.user;
+    assert(user != null);
+    assert(await user.getIdToken() != null);
+    return user;
+  } catch (e) {
+    print(e.toString());
+    return null;
+  }
+}
+
+Future<User> signIn(String email, String password) async {
+  await Firebase.initializeApp();
+  try {
+    UserCredential result = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    User user = result.user;
+    assert(user != null);
+    assert(await user.getIdToken() != null);
+    return user;
+  } catch (e) {
+    print(e.toString());
+    return null;
+  }
+}
