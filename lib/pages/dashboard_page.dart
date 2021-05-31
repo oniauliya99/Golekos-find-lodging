@@ -13,6 +13,52 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF2F6FD),
+       bottomNavigationBar: Container(
+        color: Colors.white,
+        height: 69,
+        child: Row(
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 22, vertical: 5),
+                  child: Column(
+                    children: [
+                      Text(
+                        "\$1,355",
+                        style: orderMedium.copyWith(
+                            fontSize: 24, color: Colors.black),
+                      ),
+                      Text(
+                        "/month",
+                        style: orderLight.copyWith(
+                            fontSize: 14, color: Color(0xffA5A5A5)),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Expanded(
+              child: InkWell(
+                child: Container(
+                  alignment: Alignment.center,
+                  color: Color(0xff29D5F8),
+                  child: Text(
+                    "BOOKING NOW",
+                    style: orderSemiBold.copyWith(
+                        fontSize: 24, color: Colors.white),
+                  ),
+                ),
+                onTap: () {
+                  print("object");
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
       body: Container(
         margin: EdgeInsets.only(top: 8),
         child: ListView(
