@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:golekos/pages/login_page.dart';
 import 'package:golekos/theme.dart';
 
 class LandingPage extends StatelessWidget {
@@ -30,7 +31,11 @@ class LandingPage extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 50),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          var route = MaterialPageRoute(builder: (_) => LoginPage());
+
+          Navigator.of(context).push(route);
+        },
         child: Text(
           'Login',
           style: orderRegular.copyWith(
@@ -123,7 +128,12 @@ class LandingPage extends StatelessWidget {
                     width: 3,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      var route =
+                          MaterialPageRoute(builder: (_) => LoginPage());
+
+                      Navigator.of(context).push(route);
+                    },
                     child: Text(
                       'Sign in',
                       style: orderRegular.copyWith(
