@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.golekos">
+    package="com.oritech.golekos">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="golekos"
         android:icon="@mipmap/ic_launcher">
