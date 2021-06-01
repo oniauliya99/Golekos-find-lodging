@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:golekos/pages/dashboard_page.dart';
+import 'package:golekos/pages/buttom_bar.dart';
 import 'package:golekos/services/auth_services.dart';
+import 'package:golekos/services/signin.dart';
 import 'package:golekos/theme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -36,7 +38,6 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     var user = await AuthService.signInAnonymous();
-
                     if (user != null) {
                       var route =
                           MaterialPageRoute(builder: (_) => Dashboard(user));
@@ -87,7 +88,16 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(20)),
                 color: Colors.white,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    signInWithGoogle().then((result) {
+                      if (result != null) {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return ButtomBar();
+                        }));
+                      }
+                    });
+                  },
                   child: Row(
                     children: [
                       SizedBox(
