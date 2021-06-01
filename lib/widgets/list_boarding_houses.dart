@@ -1,82 +1,173 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
+import 'package:intl/intl.dart';
 
 class BoardingHouses extends StatelessWidget {
-  const BoardingHouses({
-    Key key,
-  }) : super(key: key);
+  const BoardingHouses(
+      {this.name, this.type, this.price, this.imageUrl, this.detector});
+
+  final String name, type, imageUrl;
+  final int price;
+  final int detector; // value-nya buat ngatur border radius
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: Container(
-        height: 110,
-        margin: EdgeInsets.only(bottom: 11, left: 16, right: 16),
-        padding: EdgeInsets.only(left: 14, top: 12, bottom: 12, right: 10),
-        decoration: BoxDecoration(
-          color: Color(0xffFFFFFF),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    // Format uang
+    final currencyFormat = NumberFormat("#,##0", "en_US");
+
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      child: ListTile(
+        // TODO: Add activity here
+
+        onTap: () {},
+        contentPadding: EdgeInsets.all(16),
+        title: Row(
           children: [
-            Row(
-              children: [
-                Container(
-                  height: 80,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/pic.png'),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 19),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Fukko Cozy",
-                      style: orderRegular.copyWith(
-                          fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      "Umum",
-                      style: orderLight.copyWith(
-                          fontSize: 12,
-                          color: Color(0xffA5A5A5),
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
-                ),
-              ],
+            Container(
+              width: 120, // Jarak biar ngga terlalu over
+              child: Text(
+                name ?? "Product name",
+                style: orderMedium.copyWith(
+                    fontSize: 16, color: Color(0xff040507)),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-            Row(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "\$55",
-                      style: orderRegular.copyWith(
-                          fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      "/month",
-                      style: orderLight.copyWith(
-                          fontSize: 12,
-                          color: Color(0xffA5A5A5),
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
-                ),
-              ],
-            )
+            Spacer(),
+            Text(
+              'Rp ${currencyFormat.format(price) ?? 0}',
+              style:
+                  orderMedium.copyWith(fontSize: 16, color: Color(0xff040507)),
+            ),
           ],
         ),
+        subtitle: Row(
+          children: [
+            Text(
+              type ?? "Product type",
+              style:
+                  orderLight.copyWith(fontSize: 12, color: Color(0xffA5A5A5)),
+            ),
+            Spacer(),
+            Text(
+              '/month',
+              style:
+                  orderLight.copyWith(fontSize: 12, color: Color(0xffA5A5A5)),
+            ),
+          ],
+        ),
+        leading: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.network(
+              imageUrl ?? 'https://via.placeholder.com/150',
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+            )),
+
+        // ListTile style
+
+        shape: RoundedRectangleBorder(
+          borderRadius: (detector == 0)
+              ? BorderRadius.zero
+              : ((detector == 1)
+                  ? BorderRadius.vertical(top: Radius.circular(16))
+                  : BorderRadius.vertical(bottom: Radius.circular(16))),
+        ),
       ),
-      onTap: () {},
+
+      // Card style
+
+      shape: RoundedRectangleBorder(
+        /**
+         * 
+         * Jika detector terdeteksi 0, maka hilangkan border
+         * Jika detector terdeteksi 1, maka aktifkan border top
+         * Selain itu, aktifkan border bottom
+         * 
+         */
+
+        borderRadius: (detector == 0)
+            ? BorderRadius.zero
+            : ((detector == 1)
+                ? BorderRadius.vertical(top: Radius.circular(16))
+                : BorderRadius.vertical(bottom: Radius.circular(16))),
+      ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return InkWell(
+  //     child: Container(
+  //       height: 110,
+  //       margin: EdgeInsets.only(bottom: 11, left: 16, right: 16),
+  //       padding: EdgeInsets.only(left: 14, top: 12, bottom: 12, right: 10),
+  //       decoration: BoxDecoration(
+  //         color: Color(0xffFFFFFF),
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Row(
+  //             children: [
+  //               Container(
+  //                 height: 80,
+  //                 width: 80,
+  //                 decoration: BoxDecoration(
+  //                   image: DecorationImage(
+  //                     image: NetworkImage(imageUrl),
+  //                   ),
+  //                 ),
+  //               ),
+  //               SizedBox(width: 19),
+  //               Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(
+  //                     name,
+  //                     style: orderRegular.copyWith(
+  //                         fontSize: 16, fontWeight: FontWeight.w600),
+  //                   ),
+  //                   Text(
+  //                     type,
+  //                     style: orderLight.copyWith(
+  //                         fontSize: 12,
+  //                         color: Color(0xffA5A5A5),
+  //                         fontWeight: FontWeight.w600),
+  //                   )
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //           Row(
+  //             children: [
+  //               Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   Text(
+  //                     price,
+  //                     style: orderRegular.copyWith(
+  //                         fontSize: 16, fontWeight: FontWeight.w600),
+  //                   ),
+  //                   Text(
+  //                     "/month",
+  //                     style: orderLight.copyWith(
+  //                         fontSize: 12,
+  //                         color: Color(0xffA5A5A5),
+  //                         fontWeight: FontWeight.w600),
+  //                   )
+  //                 ],
+  //               ),
+  //             ],
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //     onTap: () {},
+  //   );
+  // }
 }
