@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:golekos/pages/detail_page.dart';
+import 'package:golekos/services/signin.dart';
 import '../theme.dart';
 import 'package:intl/intl.dart';
 
@@ -21,7 +23,12 @@ class BoardingHouses extends StatelessWidget {
       child: ListTile(
         // TODO: Add activity here
 
-        onTap: () {},
+        onTap: () {
+          MaterialPageRoute route = MaterialPageRoute(
+              builder: (_) => DetailPage(
+                  name: name, price: price, type: type, imageUrl: imageUrl));
+          Navigator.push(context, route);
+        },
         contentPadding: EdgeInsets.all(16),
         title: Row(
           children: [
