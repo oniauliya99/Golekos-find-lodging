@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:golekos/services/signin.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/list_user_riview.dart';
+import 'package:intl/intl.dart';
 
 class DetailPage extends StatefulWidget {
+  final name, type, imageUrl;
+  final price;
+  const DetailPage({this.name, this.type, this.price, this.imageUrl});
   @override
   _DetailPageState createState() => _DetailPageState();
 }
@@ -11,6 +16,10 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
+    final currencyFormat = NumberFormat("#,##0", "en_US");
+
+    String path;
+    path = widget.imageUrl;
     return Scaffold(
       backgroundColor: Color(0xffF2F6FD),
       bottomNavigationBar: Container(
@@ -26,7 +35,7 @@ class _DetailPageState extends State<DetailPage> {
                   child: Column(
                     children: [
                       Text(
-                        "\$1,355",
+                        'Rp ${currencyFormat.format(widget.price) ?? 0}',
                         style: orderMedium.copyWith(
                             fontSize: 24, color: Colors.black),
                       ),
@@ -68,7 +77,7 @@ class _DetailPageState extends State<DetailPage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: AssetImage('assets/images/pic2.png'),
+                  image: NetworkImage(path),
                 ),
               ),
               child: Padding(
@@ -112,8 +121,9 @@ class _DetailPageState extends State<DetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Blue Fast",
+                          widget.name ?? "Product name",
                           style: orderBold.copyWith(fontSize: 24),
+                          maxLines: 4,
                         ),
                         SvgPicture.asset('assets/svg/rate.svg'),
                       ],
