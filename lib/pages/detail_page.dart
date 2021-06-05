@@ -6,9 +6,20 @@ import 'package:golekos/widgets/list_user_riview.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatefulWidget {
-  final name, type, imageUrl;
+  final name, type, imageUrl, location;
   final price;
-  const DetailPage({this.name, this.type, this.price, this.imageUrl});
+  final bed;
+  final bath;
+  final kitchen;
+  const DetailPage(
+      {this.name,
+      this.bed,
+      this.bath,
+      this.kitchen,
+      this.location,
+      this.type,
+      this.price,
+      this.imageUrl});
   @override
   _DetailPageState createState() => _DetailPageState();
 }
@@ -117,23 +128,30 @@ class _DetailPageState extends State<DetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           widget.name ?? "Product name",
                           style: orderBold.copyWith(fontSize: 24),
                           maxLines: 4,
                         ),
-                        SvgPicture.asset('assets/svg/rate.svg'),
+                        Text(widget.location ?? "add",
+                            style: orderMedium.copyWith(fontSize: 14),
+                            maxLines: 4),
                       ],
                     ),
-                    Text(
-                      "Umum",
-                      style: orderLight.copyWith(
-                        fontSize: 16,
-                        color: Color(0xffA5A5A5),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.type,
+                          style: orderLight.copyWith(
+                            fontSize: 16,
+                            color: Color(0xffA5A5A5),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 20,
@@ -160,7 +178,7 @@ class _DetailPageState extends State<DetailPage> {
                           width: 9,
                         ),
                         Text(
-                          "3",
+                          widget.bed.toString(),
                           style: orderSemiBold.copyWith(fontSize: 24),
                         ),
                         SizedBox(
@@ -179,7 +197,7 @@ class _DetailPageState extends State<DetailPage> {
                           width: 9,
                         ),
                         Text(
-                          "2",
+                          widget.bath.toString(),
                           style: orderSemiBold.copyWith(fontSize: 24),
                         ),
                         SizedBox(
@@ -199,7 +217,7 @@ class _DetailPageState extends State<DetailPage> {
                           width: 9,
                         ),
                         Text(
-                          "1",
+                          widget.kitchen.toString(),
                           style: orderSemiBold.copyWith(fontSize: 24),
                         ),
                       ],

@@ -210,6 +210,10 @@ class _DashboardState extends State<Dashboard> {
 
                           return BoardingHouses(
                             name: product[pos].name,
+                            bed: product[pos].numberOfBed,
+                            bath: product[pos].numberOfBath,
+                            kitchen: product[pos].numberOfKitchen,
+                            location: product[pos].location,
                             type: product[pos].type,
                             price: product[pos].price,
                             imageUrl: product[pos].imageUrl,

@@ -6,10 +6,21 @@ import 'package:intl/intl.dart';
 
 class BoardingHouses extends StatelessWidget {
   const BoardingHouses(
-      {this.name, this.type, this.price, this.imageUrl, this.detector});
+      {this.name,
+      this.bed,
+      this.bath,
+      this.kitchen,
+      this.location,
+      this.type,
+      this.price,
+      this.imageUrl,
+      this.detector});
 
-  final String name, type, imageUrl;
+  final String name, type, imageUrl, location;
   final int price;
+  final int bed;
+  final int bath;
+  final int kitchen;
   final int detector; // value-nya buat ngatur border radius
 
   @override
@@ -26,7 +37,14 @@ class BoardingHouses extends StatelessWidget {
         onTap: () {
           MaterialPageRoute route = MaterialPageRoute(
               builder: (_) => DetailPage(
-                  name: name, price: price, type: type, imageUrl: imageUrl));
+                  name: name,
+                  location: location,
+                  bed: bed,
+                  bath: bath,
+                  kitchen: kitchen,
+                  price: price,
+                  type: type,
+                  imageUrl: imageUrl));
           Navigator.push(context, route);
         },
         contentPadding: EdgeInsets.all(16),
