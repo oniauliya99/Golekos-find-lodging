@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:golekos/pages/dashboard_page.dart';
 import 'package:golekos/pages/buttom_bar.dart';
+import 'package:golekos/pages/sign_up_page.dart';
 import 'package:golekos/services/auth_services.dart';
 import 'package:golekos/services/signin.dart';
 import 'package:golekos/theme.dart';
@@ -11,6 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                     var user = await AuthService.signInAnonymous();
                     if (user != null) {
                       var route =
-                          MaterialPageRoute(builder: (_) => Dashboard(user));
+                          MaterialPageRoute(builder: (_) => ButtomBar(user: user));
                       Navigator.of(context).push(route);
                     }
                   },
@@ -150,11 +154,40 @@ class _LoginPageState extends State<LoginPage> {
                   margin: EdgeInsets.only(left: 20),
                   alignment: Alignment.center,
                   child: new TextFormField(
+                    controller: email,
                     keyboardType: TextInputType.text,
                     style: orderRegular.copyWith(fontSize: 20),
                     decoration: InputDecoration(
-                        hintText: 'Work email address',
-                        hintStyle: orderRegular.copyWith(fontSize: 20),
+                        hintText: 'E-mail',
+                        hintStyle: orderRegular.copyWith(
+                          fontSize: 20,
+                          color: Color(0x6C383737),
+                        ),
+                        border: InputBorder.none),
+                    onChanged: (value) {},
+                  ),
+                ),
+              ),
+            ),
+            new ListTile(
+              title: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.only(left: 30, right: 30, top: 20),
+                height: 60,
+                child: Container(
+                  margin: EdgeInsets.only(left: 20),
+                  alignment: Alignment.center,
+                  child: new TextFormField(
+                    controller: password,
+                    obscureText: true,
+                    keyboardType: TextInputType.text,
+                    style: orderRegular.copyWith(fontSize: 20),
+                    decoration: InputDecoration(
+                        hintText: 'Password',
+                        hintStyle: orderRegular.copyWith(
+                            fontSize: 20, color: Color(0x6C383737)),
                         border: InputBorder.none),
                     onChanged: (value) {},
                   ),
@@ -172,12 +205,26 @@ class _LoginPageState extends State<LoginPage> {
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        child: Text(
-                          'Email me a sign up link ',
-                          style: orderRegular.copyWith(
-                              color: Colors.white, fontSize: 20),
+                      InkWell(
+                        child: Container(
+                          child: Text(
+                            'Email me a sign up link ',
+                            style: orderRegular.copyWith(
+                                color: Colors.white, fontSize: 20),
+                          ),
                         ),
+                        onTap: () async {
+                          signIn(email.text, password.text).then((result) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ButtomBar(
+                                  user: result,
+                                ),
+                              ),
+                            );
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -199,10 +246,20 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(top: 30),
-                  child: Text(
-                    'here ',
-                    style:
-                        orderRegular.copyWith(fontSize: 15, color: Colors.grey),
+                  child: GestureDetector(
+                    child: Text(
+                      'here ',
+                      style: orderRegular.copyWith(
+                          fontSize: 15, color: Colors.grey),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpPage(),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
