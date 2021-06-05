@@ -20,30 +20,21 @@ class _DashboardState extends State<Dashboard> {
   int productRadius = 0;
   List<Product> product = [];
 
-  TextEditingController searchProduct;
+  TextEditingController searchProduct = TextEditingController();
 
   @override
   void initState() {
-    super.initState();
-
     // Get data when the first page loads
     retrieveData();
-    searchProduct = TextEditingController();
+    super.initState();
   }
-
-  @override
-  void dispose() {
-    product.clear();
-    searchProduct.dispose();
-    super.dispose();
-  }
-
-  // Get data from API
 
   void retrieveData([String search = '']) async {
     var result = await Product.getProduct(name: search);
     if (result != null) {
       product = result;
+    }
+    if (this.mounted) {
       setState(() {});
     }
   }
@@ -79,20 +70,11 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   children: [
                     Text(
-                      'Shayna Far',
+                      widget.user.email ?? "losdol",
                       style: orderBold.copyWith(
                           fontSize: 24, color: Color(0xff040507)),
                       overflow: TextOverflow.ellipsis,
                     ),
-
-                    // TODO: Ilangono iki mek nyobak login" e
-
-                    ElevatedButton(
-                        onPressed: () {
-                          AuthService.signOut()
-                              .then((_) => Navigator.of(context).pop());
-                        },
-                        child: Text('Logout')),
                   ],
                 ),
               ),
@@ -104,8 +86,8 @@ class _DashboardState extends State<Dashboard> {
 
           Image.asset(
             'assets/images/user_pic.png',
-            width: 55,
-            height: 55,
+            width: 50,
+            height: 50,
             fit: BoxFit.cover,
           ),
         ],
@@ -251,56 +233,6 @@ class _DashboardState extends State<Dashboard> {
       ),
 
       // Bottom navigation
-
-      bottomNavigationBar: Container(
-        color: Colors.white,
-        height: 69,
-        child: Row(
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 22, vertical: 5),
-                  child: Column(
-                    children: [
-                      Text(
-                        "\$1,355",
-                        style: orderMedium.copyWith(
-                            fontSize: 24, color: Colors.black),
-                      ),
-                      Text(
-                        "/month",
-                        style: orderLight.copyWith(
-                            fontSize: 14, color: Color(0xffA5A5A5)),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Expanded(
-              child: InkWell(
-                child: Container(
-                  alignment: Alignment.center,
-                  color: Color(0xff29D5F8),
-                  child: Text(
-                    "BOOKING NOW",
-                    style: orderSemiBold.copyWith(
-                        fontSize: 24, color: Colors.white),
-                  ),
-                ),
-
-                // TODO: add function in button
-
-                onTap: () {
-                  print("object");
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
