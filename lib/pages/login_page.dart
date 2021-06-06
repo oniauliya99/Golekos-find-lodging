@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Color(0xFFF2F6FD),
       body: Container(
-        margin: EdgeInsets.only(top: 100),
+        margin: EdgeInsets.only(top: 30),
         child: ListView(
           physics: ClampingScrollPhysics(),
           children: [
@@ -43,8 +43,8 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     var user = await AuthService.signInAnonymous();
                     if (user != null) {
-                      var route =
-                          MaterialPageRoute(builder: (_) => ButtomBar(user: user));
+                      var route = MaterialPageRoute(
+                          builder: (_) => ButtomBar(user: user));
                       Navigator.of(context).push(route);
                     }
                   },
@@ -208,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                       InkWell(
                         child: Container(
                           child: Text(
-                            'Email me a sign up link ',
+                            'LOGIN TO ACCOUNT',
                             style: orderRegular.copyWith(
                                 color: Colors.white, fontSize: 20),
                           ),
@@ -266,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 80),
+              margin: EdgeInsets.only(top: 70),
               child: Text(
                 'You are completely safe',
                 style: orderBold.copyWith(fontSize: 15, color: Colors.black),
