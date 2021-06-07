@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:golekos/pages/buttom_bar.dart';
+import 'package:golekos/services/auth_services.dart';
 import 'package:golekos/theme.dart';
-import 'package:golekos/services/signin.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -118,13 +119,17 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 onTap: () async {
-                  signUp(email.text, password.text).then(
-                    (result) {
-                      if (result != null) {
-                        Navigator.pop(context);
-                      }
-                    },
-                  );
+                  AuthService.signUpWithEmailAndPassword(
+                          email.text, password.text)
+                      .then((user) {
+                    var route = MaterialPageRoute(builder: (_) {
+                      return ButtomBar(
+                        user: user,
+                      );
+                    });
+
+                    Navigator.of(context).pop();
+                  });
                 },
               ),
             ),
