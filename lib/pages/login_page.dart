@@ -4,7 +4,6 @@ import 'package:golekos/pages/dashboard_page.dart';
 import 'package:golekos/pages/buttom_bar.dart';
 import 'package:golekos/pages/sign_up_page.dart';
 import 'package:golekos/services/auth_services.dart';
-import 'package:golekos/services/signin.dart';
 import 'package:golekos/theme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,8 +14,128 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    // Sign in with google button
+
+    var signWithGoogle = ElevatedButton(
+      onPressed: () {
+        AuthService.signInWithGoogle().then((user) {
+          var route = MaterialPageRoute(
+              builder: (_) => ButtomBar(
+                    user: user,
+                  ));
+          Navigator.pushAndRemoveUntil(context, route, (route) => true);
+        });
+      },
+      child: Row(
+        children: [
+          SizedBox(
+            width: 22,
+          ),
+          Image.asset(
+            'assets/images/sign_in/google.png',
+            width: 24,
+            height: 24,
+            fit: BoxFit.cover,
+          ),
+          SizedBox(
+            width: 32,
+          ),
+          Text(
+            'Sign in with Google',
+            style: orderRegular.copyWith(
+              fontSize: 20,
+              color: Color(0xff4285F4),
+            ),
+          ),
+        ],
+      ),
+      style: ElevatedButton.styleFrom(
+        primary: Color(0xffffffff),
+        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+      ),
+    );
+
+    // Sign in with email and password button
+
+    var signInWithEmail = InkWell(
+      child: Container(
+        child: Text(
+          'LOGIN TO ACCOUNT',
+          style: orderRegular.copyWith(color: Colors.white, fontSize: 20),
+        ),
+      ),
+      onTap: () {
+        AuthService.signInWithEmailAndPassword(email.text, password.text)
+            .then((result) {
+          var route = MaterialPageRoute(
+              builder: (_) => ButtomBar(
+                    user: result,
+                  ));
+
+          Navigator.pushAndRemoveUntil(context, route, (route) => true);
+        });
+      },
+    );
+
+    // Sign in as guest
+
+    var signInAsGuest = ElevatedButton(
+      onPressed: () async {
+        AuthService.signInAnonymous().then((user) {
+          var route = MaterialPageRoute(
+              builder: (_) => ButtomBar(
+                    user: user,
+                  ));
+
+          Navigator.pushAndRemoveUntil(context, route, (route) => true);
+        });
+
+        var user = await AuthService.signInAnonymous();
+        if (user != null) {
+          var route = MaterialPageRoute(builder: (_) => ButtomBar(user: user));
+          Navigator.of(context).push(route);
+        }
+      },
+      child: Row(
+        children: [
+          SizedBox(
+            width: 22,
+          ),
+          Image.asset(
+            'assets/images/sign_in/logo.png',
+            width: 24,
+            height: 24,
+            fit: BoxFit.cover,
+          ),
+          SizedBox(
+            width: 46,
+          ),
+          Text(
+            'Sign in as Guest',
+            style: orderRegular.copyWith(
+              fontSize: 20,
+              color: Color(0xff2C2929),
+            ),
+          ),
+        ],
+      ),
+      style: ElevatedButton.styleFrom(
+        primary: Color(0xffffffff),
+        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+      ),
+    );
+
+    // MAIN
+
     return Scaffold(
       backgroundColor: Color(0xFFF2F6FD),
       body: Container(
@@ -39,46 +158,10 @@ class _LoginPageState extends State<LoginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 color: Colors.white,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    var user = await AuthService.signInAnonymous();
-                    if (user != null) {
-                      var route = MaterialPageRoute(
-                          builder: (_) => ButtomBar(user: user));
-                      Navigator.of(context).push(route);
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 22,
-                      ),
-                      Image.asset(
-                        'assets/images/sign_in/logo.png',
-                        width: 24,
-                        height: 24,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(
-                        width: 46,
-                      ),
-                      Text(
-                        'Sign in as Guest',
-                        style: orderRegular.copyWith(
-                          fontSize: 20,
-                          color: Color(0xff2C2929),
-                        ),
-                      ),
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xffffffff),
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                  ),
-                ),
+
+                // Sign as Guest
+
+                child: signInAsGuest,
               ),
             ),
 
@@ -91,48 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 color: Colors.white,
-                child: ElevatedButton(
-                  onPressed: () {
-                    signInWithGoogle().then((result) {
-                      if (result != null) {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) {
-                          return ButtomBar();
-                        }));
-                      }
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 22,
-                      ),
-                      Image.asset(
-                        'assets/images/sign_in/google.png',
-                        width: 24,
-                        height: 24,
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(
-                        width: 32,
-                      ),
-                      Text(
-                        'Sign in with Google',
-                        style: orderRegular.copyWith(
-                          fontSize: 20,
-                          color: Color(0xff4285F4),
-                        ),
-                      ),
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xffffffff),
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                  ),
-                ),
+                child: signWithGoogle,
               ),
             ),
             Container(
@@ -143,6 +185,11 @@ class _LoginPageState extends State<LoginPage> {
                 style: orderRegular.copyWith(fontSize: 15, color: Colors.grey),
               ),
             ),
+
+            // Email and password input
+
+            // Email input
+
             new ListTile(
               title: Container(
                 decoration: BoxDecoration(
@@ -169,6 +216,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+
+            // Password input
+
             new ListTile(
               title: Container(
                 decoration: BoxDecoration(
@@ -194,6 +244,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+
+            // Sign in with email and password
+
             Container(
               margin: EdgeInsets.only(left: 40, right: 40, top: 10),
               height: 65,
@@ -205,32 +258,15 @@ class _LoginPageState extends State<LoginPage> {
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      InkWell(
-                        child: Container(
-                          child: Text(
-                            'LOGIN TO ACCOUNT',
-                            style: orderRegular.copyWith(
-                                color: Colors.white, fontSize: 20),
-                          ),
-                        ),
-                        onTap: () async {
-                          signIn(email.text, password.text).then((result) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ButtomBar(
-                                  user: result,
-                                ),
-                              ),
-                            );
-                          });
-                        },
-                      ),
+                      // Sign in with email
+
+                      signInWithEmail,
                     ],
                   ),
                 ),
               ),
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
