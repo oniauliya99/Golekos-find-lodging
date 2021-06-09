@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:golekos/theme.dart';
 
 class OrderRow extends StatelessWidget {
-  OrderRow({this.title, this.value, this.isTotal = false});
+  OrderRow(
+      {this.title,
+      this.value,
+      this.isTotal = false,
+      this.isPaymentStatus = false});
 
   String title;
   String value;
   bool isTotal;
+  bool isPaymentStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,9 @@ class OrderRow extends StatelessWidget {
             value,
             style: (isTotal)
                 ? orderBold.copyWith(color: orderGreen)
-                : orderBold.copyWith(color: Color(0xff202020)),
+                : ((isPaymentStatus)
+                    ? orderBold.copyWith(color: Color(0xffE9421E))
+                    : orderBold.copyWith(color: Color(0xff202020))),
           ),
         ],
       ),
