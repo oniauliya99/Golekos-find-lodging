@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:golekos/pages/booking_info.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/list_user_riview.dart';
 import 'package:intl/intl.dart';
@@ -71,7 +72,11 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 onTap: () {
-                  print("object");
+                  var route = MaterialPageRoute(builder: (_) {
+                    return BookingInfo();
+                  });
+
+                  Navigator.of(context).push(route);
                 },
               ),
             ),
