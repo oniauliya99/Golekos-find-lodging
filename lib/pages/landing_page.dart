@@ -59,91 +59,93 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xffFAFBFD),
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 90,
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 90,
+              ),
 
-            // Golekos logo
-            Image.asset(
-              'assets/images/golekos_logo.png',
-              width: 327.61,
-              height: 225,
-            ),
+              // Golekos logo
+              Image.asset(
+                'assets/images/golekos_logo.png',
+                width: 327.61,
+                height: 225,
+              ),
 
-            SizedBox(
-              height: 29,
-            ),
+              SizedBox(
+                height: 29,
+              ),
 
-            // Title
-            Text('GOLEKOS',
-                style: orderRegular.copyWith(
-                  fontSize: 45,
-                  color: Color(0xff29D5F8),
-                )),
+              // Title
+              Text('GOLEKOS',
+                  style: orderRegular.copyWith(
+                    fontSize: 45,
+                    color: Color(0xff29D5F8),
+                  )),
 
-            // Message
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 6),
-              child: Text(
-                'The best solution for booking a boarding house',
-                textAlign: TextAlign.center,
-                style: orderRegular.copyWith(
-                  fontSize: 20,
-                  color: Color(0xff2C2929),
+              // Message
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 6),
+                child: Text(
+                  'The best solution for booking a boarding house',
+                  textAlign: TextAlign.center,
+                  style: orderRegular.copyWith(
+                    fontSize: 20,
+                    color: Color(0xff2C2929),
+                  ),
                 ),
               ),
-            ),
 
-            SizedBox(
-              height: 73,
-            ),
-
-            // Get started button
-            getStartedBtn,
-
-            SizedBox(
-              height: 16,
-            ),
-
-            // Login button
-            loginBtn,
-
-            SizedBox(
-              height: 30,
-            ),
-
-            // Login button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 97),
-              child: Row(
-                children: [
-                  Text(
-                    'New around here?',
-                    style: orderRegular.copyWith(
-                        fontSize: 15, color: Color(0xff000000)),
-                  ),
-                  SizedBox(
-                    width: 3,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      var route =
-                          MaterialPageRoute(builder: (_) => LoginPage());
-
-                      Navigator.of(context).push(route);
-                    },
-                    child: Text(
-                      'Sign in',
-                      style: orderRegular.copyWith(
-                          fontSize: 15, color: Color(0xff29D5F8)),
-                    ),
-                  ),
-                ],
+              SizedBox(
+                height: 73,
               ),
-            ),
-          ],
+
+              // Get started button
+              getStartedBtn,
+
+              SizedBox(
+                height: 16,
+              ),
+
+              // Login button
+              loginBtn,
+
+              SizedBox(
+                height: 30,
+              ),
+
+              // Login button
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 97),
+                child: Row(
+                  children: [
+                    Text(
+                      'New around here?',
+                      style: orderRegular.copyWith(
+                          fontSize: 15, color: Color(0xff000000)),
+                    ),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        var route =
+                            MaterialPageRoute(builder: (_) => LoginPage());
+
+                        Navigator.of(context).push(route);
+                      },
+                      child: Text(
+                        'Sign in',
+                        style: orderRegular.copyWith(
+                            fontSize: 15, color: Color(0xff29D5F8)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
