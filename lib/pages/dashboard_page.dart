@@ -70,7 +70,7 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   children: [
                     Text(
-                      widget.user.email ?? "losdol",
+                      widget.user?.email ?? "losdol",
                       style: orderBold.copyWith(
                           fontSize: 24, color: Color(0xff040507)),
                       overflow: TextOverflow.ellipsis,
