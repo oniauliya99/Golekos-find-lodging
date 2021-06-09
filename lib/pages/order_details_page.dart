@@ -2,7 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/order_summary_row.dart';
 
-class OrderDetails extends StatelessWidget {
+enum payment { transfer, onsite }
+
+class OrderDetails extends StatefulWidget {
+  @override
+  _OrderDetailsState createState() => _OrderDetailsState();
+}
+
+class _OrderDetailsState extends State<OrderDetails> {
+  payment paymentSelect = payment.onsite;
+
+  String paymentSelected = 'onsite';
+
+  selectAPayment(value) {
+    switch (paymentSelect) {
+      case payment.transfer:
+        paymentSelected = 'transfer';
+        setState(() {});
+        break;
+      case payment.onsite:
+        paymentSelected = 'onsite';
+        setState(() {});
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +52,9 @@ class OrderDetails extends StatelessWidget {
                       Icons.arrow_back_ios,
                       color: orderGrey,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
                   backgroundColor: Colors.transparent,
                   elevation: 0,
@@ -59,7 +85,7 @@ class OrderDetails extends StatelessWidget {
                       Row(
                         children: [
                           Image.asset(
-                            'assets/images/kost_pic.png',
+                            'assets/images/noproduct.png',
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover,
@@ -135,6 +161,11 @@ class OrderDetails extends StatelessWidget {
                         title: 'Tax',
                         value: '10%',
                       ),
+                      OrderRow(
+                        title: 'Payment Status',
+                        value: 'Not Yet Paid',
+                        isPaymentStatus: true,
+                      ),
                       Divider(
                         color: Color(0xffd8d8d8),
                       ),
@@ -174,38 +205,127 @@ class OrderDetails extends StatelessWidget {
                         height: 10,
                       ),
 
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/payment/visa.png',
-                            width: 43,
-                            height: 26,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                      TextButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    content: Stack(
+                                      clipBehavior: Clip.hardEdge,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              'Choose payment',
+                                              style: orderBold.copyWith(
+                                                  color: orderBlack),
+                                            ),
+                                            SizedBox(
+                                              height: 12,
+                                            ),
+                                            TextButton(
+                                                onPressed: () {
+                                                  paymentSelect =
+                                                      payment.transfer;
+                                                  selectAPayment(paymentSelect);
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Image.asset(
+                                                        'assets/images/payment/visa.png',
+                                                        width: 43,
+                                                        height: 26),
+                                                    SizedBox(
+                                                      width: 12,
+                                                    ),
+                                                    Text('Bank transfer',
+                                                        style: orderMedium
+                                                            .copyWith(
+                                                                fontSize: 12,
+                                                                color: Color(
+                                                                    0xff000000))),
+                                                  ],
+                                                )),
+                                            Divider(
+                                              color: Colors.black12,
+                                              height: 2,
+                                            ),
+                                            TextButton(
+                                                onPressed: () {
+                                                  paymentSelect =
+                                                      payment.onsite;
+                                                  selectAPayment(paymentSelect);
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Image.asset(
+                                                        'assets/images/payment/visa.png',
+                                                        width: 43,
+                                                        height: 26),
+                                                    SizedBox(
+                                                      width: 12,
+                                                    ),
+                                                    Text('Onsite',
+                                                        style: orderMedium
+                                                            .copyWith(
+                                                                fontSize: 12,
+                                                                color: Color(
+                                                                    0xff000000))),
+                                                  ],
+                                                )),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Row(
                             children: [
-                              Text(
-                                'Visa Classic',
-                                style: orderMedium.copyWith(
-                                    fontSize: 12, color: Color(0xff000000)),
+                              Image.asset(
+                                'assets/images/payment/visa.png',
+                                width: 43,
+                                height: 26,
                               ),
-                              Text(
-                                '••••   ••••   ••••   1996',
-                                style: orderSemiBold.copyWith(
-                                    fontSize: 10, color: Color(0xff000000)),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    (paymentSelected == 'onsite')
+                                        ? 'On site'
+                                        : 'Bank transfer',
+                                    style: orderMedium.copyWith(
+                                        fontSize: 12, color: Color(0xff000000)),
+                                  ),
+                                  Text(
+                                    (paymentSelected == 'onsite')
+                                        ? 'No details needed'
+                                        : '••••   ••••   ••••   1996',
+                                    style: orderSemiBold.copyWith(
+                                        fontSize: 10, color: Color(0xff000000)),
+                                  ),
+                                ],
+                              ),
+                              Spacer(),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Color(0xff8C8C8C),
                               ),
                             ],
                           ),
-                          Spacer(),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xff8C8C8C),
-                          ),
-                        ],
-                      ),
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                          )),
+
                       SizedBox(
                         height: 10,
                       ),
@@ -219,17 +339,23 @@ class OrderDetails extends StatelessWidget {
                       // Promo code
 
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                         width: double.infinity,
-                        child: Text(
-                          'Promo Code',
-                          style: orderMedium.copyWith(
-                              fontSize: 12, color: orderGrey),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text('PAY'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xffFFC33A),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 16, horizontal: 20),
+                            textStyle: orderMedium.copyWith(
+                                fontSize: 12, color: Color(0xff414B5A)),
+                            elevation: 0,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                            color: Color(0xffF8F8F8),
-                            borderRadius: BorderRadius.all(Radius.circular(8))),
                       ),
                     ],
                   ),
@@ -237,6 +363,10 @@ class OrderDetails extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
+                ),
+
+                SizedBox(
+                  height: 25,
                 ),
               ],
             ),
