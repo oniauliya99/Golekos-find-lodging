@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:golekos/pages/order_details_page.dart';
 import '../theme.dart';
 
 class BookingInfo extends StatefulWidget {
@@ -245,10 +246,17 @@ class _BookingInfoState extends State<BookingInfo> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Check details'),
+                    onPressed: () {
+                      var route = MaterialPageRoute(builder: (_) {
+                        return OrderDetails();
+                      });
+
+                      Navigator.of(context).push(route);
+                    },
+                    child: Text('Check out'),
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xffFFC33A),
+                      shadowColor: Colors.transparent,
                       padding: EdgeInsets.symmetric(vertical: 18),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -257,6 +265,10 @@ class _BookingInfoState extends State<BookingInfo> {
                           fontSize: 16, color: Color(0xff414B5A)),
                     ),
                   ),
+                ),
+
+                SizedBox(
+                  height: 20,
                 ),
               ],
             ),
