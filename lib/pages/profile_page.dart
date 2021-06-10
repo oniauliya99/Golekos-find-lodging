@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/profile_tab.dart';
 
 class Profile extends StatefulWidget {
+  final User user;
+  Profile({this.user});
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -86,7 +90,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 height: 62,
               ),
               Text(
-                'Braun Marz',
+                widget.user?.email ?? 'Guest',
                 style: orderSemiBold.copyWith(
                     fontSize: 20, color: Color(0xff000000)),
               ),
