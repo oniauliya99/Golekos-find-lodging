@@ -42,7 +42,7 @@ class _DetailPageState extends State<DetailPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 22, vertical: 5),
+                  margin: EdgeInsets.symmetric(horizontal: 22, vertical: 2),
                   child: Column(
                     children: [
                       Text(
@@ -264,7 +264,7 @@ class _DetailPageState extends State<DetailPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 20),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Container(
                               width: 150,
                               height: 150,
@@ -277,7 +277,7 @@ class _DetailPageState extends State<DetailPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 20),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Container(
                               width: 150,
                               height: 150,
@@ -290,7 +290,7 @@ class _DetailPageState extends State<DetailPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 20),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Container(
                               width: 150,
                               height: 150,
