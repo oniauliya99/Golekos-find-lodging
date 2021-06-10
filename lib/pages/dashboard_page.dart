@@ -70,7 +70,7 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   children: [
                     Text(
-                      widget.user?.email ?? "losdol",
+                      widget.user?.email ?? "Guest",
                       style: orderBold.copyWith(
                           fontSize: 24, color: Color(0xff040507)),
                       overflow: TextOverflow.ellipsis,
@@ -84,11 +84,14 @@ class _DashboardState extends State<Dashboard> {
 
           // User profile shown here
 
-          Image.asset(
-            'assets/images/user_pic.png',
-            width: 50,
-            height: 50,
-            fit: BoxFit.cover,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset(
+              'assets/images/man.png',
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+            ),
           ),
         ],
       ),
