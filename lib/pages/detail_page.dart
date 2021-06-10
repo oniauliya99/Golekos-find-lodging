@@ -107,7 +107,7 @@ class _DetailPageState extends State<DetailPage> {
                           width: 50,
                         ),
                         onPressed: () {
-                          print("jalo");
+                          Navigator.pop(context);
                         }),
                     IconButton(
                         icon: SvgPicture.asset(
@@ -115,7 +115,7 @@ class _DetailPageState extends State<DetailPage> {
                           width: 50,
                         ),
                         onPressed: () {
-                          print("jalo");
+                          print("love");
                         }),
                   ],
                 ),
@@ -137,13 +137,18 @@ class _DetailPageState extends State<DetailPage> {
                       children: [
                         Text(
                           widget.name ?? "Product name",
-                          style: orderBold.copyWith(fontSize: 24),
-                          maxLines: 4,
+                          style: orderSemiBold.copyWith(fontSize: 24),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
                         ),
-                        Text(widget.location ?? "add",
-                            style: orderMedium.copyWith(fontSize: 14),
-                            maxLines: 4),
+                        // Text(widget.location ?? "add",
+                        //     style: orderMedium.copyWith(fontSize: 14),
+                        //     overflow: TextOverflow.ellipsis,
+                        //     maxLines: 4),
                       ],
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,14 +156,15 @@ class _DetailPageState extends State<DetailPage> {
                         Text(
                           widget.type,
                           style: orderLight.copyWith(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: Color(0xffA5A5A5),
                           ),
                         ),
+                        SvgPicture.asset('assets/svg/rate.svg')
                       ],
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Text(
                       'Room Specs',
@@ -170,6 +176,7 @@ class _DetailPageState extends State<DetailPage> {
                     Row(
                       children: [
                         Container(
+                          margin: EdgeInsets.only(right: 90, left: 22),
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
@@ -178,17 +185,8 @@ class _DetailPageState extends State<DetailPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 9,
-                        ),
-                        Text(
-                          widget.bed.toString(),
-                          style: orderSemiBold.copyWith(fontSize: 24),
-                        ),
-                        SizedBox(
-                          width: 60,
-                        ),
                         Container(
+                          margin: EdgeInsets.only(right: 90),
                           width: 40,
                           height: 40,
                           decoration: BoxDecoration(
@@ -196,16 +194,6 @@ class _DetailPageState extends State<DetailPage> {
                               image: AssetImage('assets/images/bath.png'),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 9,
-                        ),
-                        Text(
-                          widget.bath.toString(),
-                          style: orderSemiBold.copyWith(fontSize: 24),
-                        ),
-                        SizedBox(
-                          width: 60,
                         ),
                         Container(
                           width: 40,
@@ -217,37 +205,33 @@ class _DetailPageState extends State<DetailPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 9,
-                        ),
-                        Text(
-                          widget.kitchen.toString(),
-                          style: orderSemiBold.copyWith(fontSize: 24),
-                        ),
                       ],
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                     Row(
                       children: [
                         Text(
-                          "Master Bed",
+                          ('${widget.bed} Master Bed'),
                           style: orderLight.copyWith(
-                              fontSize: 14, color: Color(0xffA5A5A5)),
+                              fontSize: 14, color: Color(0xFF525252)),
                         ),
                         SizedBox(
                           width: 46,
                         ),
                         Text(
-                          "Bathrooms",
+                          ('${widget.bath} Bathrooms'),
                           style: orderLight.copyWith(
-                              fontSize: 14, color: Color(0xffA5A5A5)),
+                              fontSize: 14, color: Color(0xFF525252)),
                         ),
                         SizedBox(
                           width: 46,
                         ),
                         Text(
-                          "Kitchen",
+                          ('${widget.kitchen} Kitchen'),
                           style: orderLight.copyWith(
-                              fontSize: 14, color: Color(0xffA5A5A5)),
+                              fontSize: 14, color: Color(0xFF525252)),
                         ),
                       ],
                     ),
@@ -255,17 +239,98 @@ class _DetailPageState extends State<DetailPage> {
                       height: 20,
                     ),
                     Text(
-                      "Happy Tenant",
+                      "Photo",
                       style: orderBold.copyWith(fontSize: 16),
                     ),
                     SizedBox(
+                      height: 15,
+                    ),
+                    // DISPLAY PHOTO BOARDING ROOM
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Container(
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: NetworkImage(path),
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Container(
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: NetworkImage(path),
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Container(
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: NetworkImage(path),
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Container(
+                              width: 150,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: NetworkImage(path),
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(
                       height: 20,
                     ),
-                    Tenant(),
-                    Tenant(),
-                    Tenant(),
-                    Tenant(),
-                    Tenant(),
+                    Text(
+                      "Location",
+                      style: orderBold.copyWith(fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on_outlined,
+                          color: Color(0xFF868686),
+                        ),
+                        Text(
+                          widget.location ?? "loading",
+                          style: orderRegular.copyWith(
+                            fontSize: 19,
+                            color: Color(0xFF868686),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
