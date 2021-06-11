@@ -94,5 +94,10 @@ class AuthService {
     _auth.signOut();
   }
 
+  static Future<String> getUserId() async {
+    final User user = _auth.currentUser;
+    return user.uid;
+  }
+
   static Stream<User> get firebaseUserStream => _auth.authStateChanges();
 }
