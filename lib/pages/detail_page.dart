@@ -2,23 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:golekos/pages/booking_info.dart';
 import 'package:golekos/theme.dart';
-import 'package:golekos/widgets/list_user_riview.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatefulWidget {
-  final name, type, imageUrl, location;
+  final id, name, type, imageUrl, location, ownerName;
   final price;
+  final ownerPhone;
   final bed;
   final bath;
   final kitchen;
   const DetailPage(
-      {this.name,
+      {this.id,
+      this.name,
       this.bed,
       this.bath,
       this.kitchen,
       this.location,
       this.type,
       this.price,
+      this.ownerName,
+      this.ownerPhone,
       this.imageUrl});
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -72,8 +75,18 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 onTap: () {
+                  Map<String, dynamic> kostDetail = {
+                    'kost_id': widget.id,
+                    'kost_name': widget.name,
+                    'kost_type': widget.type,
+                    'kost_price': widget.price,
+                    'kost_images': widget.imageUrl,
+                    'owner_name': widget.ownerName,
+                    'owner_phone': widget.ownerPhone
+                  };
+
                   var route = MaterialPageRoute(builder: (_) {
-                    return BookingInfo();
+                    return BookingInfo(kostDetail);
                   });
 
                   Navigator.of(context).push(route);

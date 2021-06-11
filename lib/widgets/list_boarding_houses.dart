@@ -5,21 +5,26 @@ import 'package:intl/intl.dart';
 
 class BoardingHouses extends StatelessWidget {
   const BoardingHouses(
-      {this.name,
+      {this.id,
+      this.name,
       this.bed,
       this.bath,
       this.kitchen,
       this.location,
       this.type,
       this.price,
+      this.ownerName,
+      this.ownerPhone,
       this.imageUrl,
       this.detector});
 
-  final String name, type, imageUrl, location;
+  final String name, type, imageUrl, location, ownerName;
+  final int id;
   final int price;
   final int bed;
   final int bath;
   final int kitchen;
+  final int ownerPhone;
   final int detector; // value-nya buat ngatur border radius
 
   @override
@@ -36,6 +41,7 @@ class BoardingHouses extends StatelessWidget {
         onTap: () {
           MaterialPageRoute route = MaterialPageRoute(
               builder: (_) => DetailPage(
+                  id: id,
                   name: name,
                   location: location,
                   bed: bed,
@@ -120,78 +126,4 @@ class BoardingHouses extends StatelessWidget {
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return InkWell(
-  //     child: Container(
-  //       height: 110,
-  //       margin: EdgeInsets.only(bottom: 11, left: 16, right: 16),
-  //       padding: EdgeInsets.only(left: 14, top: 12, bottom: 12, right: 10),
-  //       decoration: BoxDecoration(
-  //         color: Color(0xffFFFFFF),
-  //         borderRadius: BorderRadius.circular(10),
-  //       ),
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //         children: [
-  //           Row(
-  //             children: [
-  //               Container(
-  //                 height: 80,
-  //                 width: 80,
-  //                 decoration: BoxDecoration(
-  //                   image: DecorationImage(
-  //                     image: NetworkImage(imageUrl),
-  //                   ),
-  //                 ),
-  //               ),
-  //               SizedBox(width: 19),
-  //               Column(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   Text(
-  //                     name,
-  //                     style: orderRegular.copyWith(
-  //                         fontSize: 16, fontWeight: FontWeight.w600),
-  //                   ),
-  //                   Text(
-  //                     type,
-  //                     style: orderLight.copyWith(
-  //                         fontSize: 12,
-  //                         color: Color(0xffA5A5A5),
-  //                         fontWeight: FontWeight.w600),
-  //                   )
-  //                 ],
-  //               ),
-  //             ],
-  //           ),
-  //           Row(
-  //             children: [
-  //               Column(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 children: [
-  //                   Text(
-  //                     price,
-  //                     style: orderRegular.copyWith(
-  //                         fontSize: 16, fontWeight: FontWeight.w600),
-  //                   ),
-  //                   Text(
-  //                     "/month",
-  //                     style: orderLight.copyWith(
-  //                         fontSize: 12,
-  //                         color: Color(0xffA5A5A5),
-  //                         fontWeight: FontWeight.w600),
-  //                   )
-  //                 ],
-  //               ),
-  //             ],
-  //           )
-  //         ],
-  //       ),
-  //     ),
-  //     onTap: () {},
-  //   );
-  // }
 }
