@@ -1,8 +1,5 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:golekos/models/product.dart';
 import 'package:golekos/pages/dashboard_page.dart';
 import 'package:golekos/pages/profile_page.dart';
 
@@ -28,7 +25,7 @@ class _ButtomBarState extends State<ButtomBar> {
     super.initState();
     _listTab = [
       Dashboard(widget.user),
-      Profile(),
+      Profile(widget.user),
     ];
   }
 
