@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/list_boarding_houses.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,21 +44,13 @@ class _DashboardState extends State<Dashboard> {
     var headerApp = Container(
       child: Row(
         children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 50),
-            child: SvgPicture.asset('assets/svg/Icon_menu_outline.svg',
-                width: 24, height: 24),
-          ),
-          SizedBox(
-            width: 20,
-          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Hello,',
-                style: orderRegular.copyWith(
-                    fontSize: 24, color: Color(0xff040507)),
+                style:
+                    orderBold.copyWith(fontSize: 29, color: Color(0xff040507)),
               ),
 
               // Username is displayed here
@@ -69,11 +60,9 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   children: [
                     Text(
-                      (widget.user.email == widget.user.email)
-                          ? widget.user.email
-                          : "Guest",
-                      style: orderBold.copyWith(
-                          fontSize: 24, color: Color(0xff040507)),
+                      (widget.user.email ?? "Guest"),
+                      style: orderRegular.copyWith(
+                          fontSize: 13, color: Color(0xff040507)),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -131,7 +120,7 @@ class _DashboardState extends State<Dashboard> {
                       decoration: InputDecoration(
                         // textfield hint
 
-                        hintText: "Find your next home",
+                        hintText: "Find a boarding room here",
                         hintStyle: orderLight.copyWith(
                             fontSize: 16, color: Color(0xffA5A5A5)),
                         suffixIcon: IconButton(

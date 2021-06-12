@@ -5,7 +5,7 @@ import 'package:golekos/widgets/profile_tab.dart';
 
 class Profile extends StatefulWidget {
   final User user;
-  Profile({this.user});
+  Profile([this.user]);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -26,33 +26,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
     var navigation = Column(
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 8, left: 30, right: 30),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  color: Color(0xffffffff),
-                  size: 14,
-                ),
-                onPressed: () {},
-              ),
-              TextButton(
-                child: Image.asset(
-                  'assets/images/menu.png',
-                  width: 18,
-                  height: 14,
-                  fit: BoxFit.cover,
-                ),
-                onPressed: () {},
-              )
-            ],
-          ),
-        ),
         SizedBox(
-          height: 223,
+          height: 190,
         ),
 
         // White background
@@ -94,8 +69,11 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 style: orderSemiBold.copyWith(
                     fontSize: 20, color: Color(0xff000000)),
               ),
+              SizedBox(
+                height: 6,
+              ),
               Text(
-                'UI/UX Designer, Google',
+                'Mahasiswa',
                 style: orderRegular.copyWith(color: Color(0xff858496)),
               ),
               SizedBox(
@@ -103,49 +81,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  socialButton('assets/images/social/driblle.png'),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  socialButton('assets/images/social/linkedin.png'),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  socialButton('assets/images/social/twitter.png'),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  socialButton('assets/images/social/youtube.png'),
-                ],
-              ),
-              SizedBox(
-                height: 50,
+                children: [],
               ),
             ],
-          ),
-          Center(
-            child: Container(
-              child: ElevatedButton(
-                onPressed: () {
-                  print('Hello World');
-                },
-                child: Text(
-                  'Hire Me',
-                  style: orderMedium.copyWith(color: Color(0xffFCFCFF)),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xffFF7755),
-                  shadowColor: Colors.transparent,
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 44),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              transform: Matrix4.translationValues(0, 50, 0),
-              margin: EdgeInsets.only(top: 140),
-            ),
           ),
         ],
       ),
