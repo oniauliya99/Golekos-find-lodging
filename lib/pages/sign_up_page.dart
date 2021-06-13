@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:golekos/pages/buttom_bar.dart';
-import 'package:golekos/services/auth_services.dart';
 import 'package:golekos/theme.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:golekos/services/auth_services.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -9,8 +9,26 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool passwordVisible = false;
+  String emaill = "";
+  final formKey = GlobalKey<FormState>();
+  final form2Key = GlobalKey<FormState>();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    email.addListener(onListen);
+  }
+
+  @override
+  void dispose() {
+    email.removeListener(onListen);
+    super.dispose();
+  }
+
+  void onListen() => setState(() {});
 
   @override
   Widget build(BuildContext context) {
@@ -46,20 +64,33 @@ class _SignUpPageState extends State<SignUpPage> {
                   color: Color(0xFFEEEEEE),
                   borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.only(left: 40, right: 40, bottom: 17),
-              height: 60,
-              child: Container(
-                margin: EdgeInsets.only(left: 20),
-                alignment: Alignment.center,
-                child: new TextFormField(
-                  controller: email,
-                  style: orderRegular.copyWith(fontSize: 20),
-                  decoration: InputDecoration(
-                    hintText: 'Email address',
-                    hintStyle: orderRegular.copyWith(
-                        fontSize: 20, color: Color(0x6C383737)),
-                    border: InputBorder.none,
-                  ),
-                  onChanged: (value) {},
+              height: 90,
+              width: 90,
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    new TextFormField(
+                      controller: email,
+                      style: orderRegular.copyWith(fontSize: 20),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 2, 5),
+                        hintText: 'Email address',
+                        suffixIcon: email.text.isEmpty
+                            ? Container(width: 0)
+                            : IconButton(
+                                icon: Icon(Icons.close),
+                                onPressed: () => email.clear()),
+                        hintStyle: orderRegular.copyWith(
+                            fontSize: 20, color: Color(0x6C383737)),
+                        border: InputBorder.none,
+                      ),
+                      onChanged: (value) {},
+                      validator: (value) => EmailValidator.validate(value)
+                          ? null
+                          : "Please enter a valid email",
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -69,19 +100,42 @@ class _SignUpPageState extends State<SignUpPage> {
                   borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.only(left: 40, right: 40, bottom: 17),
               height: 60,
-              child: Container(
-                margin: EdgeInsets.only(left: 20),
-                alignment: Alignment.center,
-                child: new TextFormField(
-                  controller: password,
-                  obscureText: true,
-                  style: orderRegular.copyWith(fontSize: 20),
-                  decoration: InputDecoration(
-                      hintText: 'Password',
-                      hintStyle: orderRegular.copyWith(
-                          fontSize: 20, color: Color(0x6C383737)),
-                      border: InputBorder.none),
-                  onChanged: (value) {},
+              child: Form(
+                key: form2Key,
+                child: Container(
+                  margin: EdgeInsets.only(left: 20),
+                  alignment: Alignment.center,
+                  child: new TextFormField(
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Empty Field, Please enter some text';
+                      }
+                      if (value.length < 8) {
+                        return 'Must be more than 8 charater';
+                      } else {
+                        return 'ok';
+                      }
+                    },
+                    controller: password,
+                    obscureText: passwordVisible,
+                    style: orderRegular.copyWith(fontSize: 20),
+                    decoration: InputDecoration(
+                        hintText: 'Password',
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                          child: Icon((passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off)),
+                        ),
+                        hintStyle: orderRegular.copyWith(
+                            fontSize: 20, color: Color(0x6C383737)),
+                        border: InputBorder.none),
+                    onChanged: (value) {},
+                  ),
                 ),
               ),
             ),
@@ -119,17 +173,19 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 onTap: () async {
-                  AuthService.signUpWithEmailAndPassword(
-                          email.text, password.text)
-                      .then((user) {
-                    var route = MaterialPageRoute(builder: (_) {
-                      return ButtomBar(
-                        user: user,
-                      );
-                    });
-
-                    Navigator.of(context).pop();
-                  });
+                  final form = formKey.currentState;
+                  final form2 = form2Key.currentState;
+                  if (form.validate() && form2.validate()) {
+                    AuthService.signUpWithEmailAndPassword(
+                            email.text, password.text)
+                        .then(
+                      (result) {
+                        if (result != null) {
+                          Navigator.pop(context);
+                        }
+                      },
+                    );
+                  }
                 },
               ),
             ),
