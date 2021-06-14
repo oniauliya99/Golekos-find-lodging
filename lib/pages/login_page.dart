@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:golekos/pages/dashboard_page.dart';
-import 'package:golekos/pages/buttom_bar.dart';
 import 'package:golekos/pages/sign_up_page.dart';
 import 'package:golekos/services/auth_services.dart';
 import 'package:golekos/theme.dart';
+import 'package:golekos/wrapper.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -43,8 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () async {
                     var user = await AuthService.signInAnonymous();
                     if (user != null) {
-                      var route = MaterialPageRoute(
-                          builder: (_) => ButtomBar(user: user));
+                      var route = MaterialPageRoute(builder: (_) => Wrapper());
                       Navigator.of(context).push(route);
                     }
                   },
@@ -97,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (result != null) {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return ButtomBar();
+                          return Wrapper();
                         }));
                       }
                     });
@@ -208,6 +205,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+
+            // Login with email and password
+
             Container(
               margin: EdgeInsets.only(left: 40, right: 40, top: 10),
               height: 65,
@@ -234,9 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ButtomBar(
-                                  user: result,
-                                ),
+                                builder: (context) => Wrapper(),
                               ),
                             );
                           });
