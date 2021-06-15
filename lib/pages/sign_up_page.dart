@@ -109,11 +109,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'Empty Field, Please enter some text';
-                      }
-                      if (value.length < 8) {
+                      } else if (value.length < 8) {
                         return 'Must be more than 8 charater';
-                      } else {
-                        return 'ok';
                       }
                     },
                     controller: password,
