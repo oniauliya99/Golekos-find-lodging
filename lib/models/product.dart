@@ -63,4 +63,23 @@ class Product {
       throw Exception('Failed to load product');
     }
   }
+
+  static Future<Product> getProductById(int id) async {
+    String url = 'https://apikost.000webhostapp.com/api/kost/list.php?id=' +
+        id.toString();
+
+    var result = await http.get(Uri.parse(url));
+
+    if (result.statusCode == 200) {
+      var jsonObject = json.decode(result.body);
+      var listProduct = (jsonObject as Map<String, dynamic>)['result'];
+
+      List<Product> product = [];
+      product.add(Product.fromJson(listProduct[0]));
+
+      return product[0];
+    } else {
+      throw Exception('Failed to get product');
+    }
+  }
 }
