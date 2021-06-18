@@ -51,7 +51,7 @@ class _BookingInfoState extends State<BookingInfo> {
     );
 
     // Second stack
-    // TODO: Aktivitas pengisian detail booking
+    // Aktivitas pengisian detail booking
 
     var form = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
