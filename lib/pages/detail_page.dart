@@ -5,24 +5,10 @@ import 'package:golekos/theme.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatefulWidget {
-  final id, name, type, imageUrl, location, ownerName;
-  final price;
-  final ownerPhone;
-  final bed;
-  final bath;
-  final kitchen;
-  const DetailPage(
-      {this.id,
-      this.name,
-      this.bed,
-      this.bath,
-      this.kitchen,
-      this.location,
-      this.type,
-      this.price,
-      this.ownerName,
-      this.ownerPhone,
-      this.imageUrl});
+  const DetailPage(this.product);
+
+  final product;
+
   @override
   _DetailPageState createState() => _DetailPageState();
 }
@@ -33,7 +19,7 @@ class _DetailPageState extends State<DetailPage> {
     final currencyFormat = NumberFormat("#,##0", "en_US");
 
     String path;
-    path = widget.imageUrl;
+    path = widget.product['kost_images'];
     return Scaffold(
       backgroundColor: Color(0xffF2F6FD),
       bottomNavigationBar: Container(
@@ -49,7 +35,7 @@ class _DetailPageState extends State<DetailPage> {
                   child: Column(
                     children: [
                       Text(
-                        'Rp ${currencyFormat.format(widget.price) ?? 0}',
+                        'Rp ${currencyFormat.format(widget.product['kost_price_per_month']) ?? 0}',
                         style: orderMedium.copyWith(
                             fontSize: 24, color: Colors.black),
                       ),
@@ -75,18 +61,8 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 onTap: () {
-                  Map<String, dynamic> kostDetail = {
-                    'kost_id': widget.id,
-                    'kost_name': widget.name,
-                    'kost_type': widget.type,
-                    'kost_price': widget.price,
-                    'kost_images': widget.imageUrl,
-                    'owner_name': widget.ownerName,
-                    'owner_phone': widget.ownerPhone
-                  };
-
                   var route = MaterialPageRoute(builder: (_) {
-                    return BookingInfo(kostDetail);
+                    return BookingInfo(widget.product);
                   });
 
                   Navigator.of(context).push(route);
@@ -105,7 +81,8 @@ class _DetailPageState extends State<DetailPage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: NetworkImage(path),
+                  image:
+                      NetworkImage(path ?? 'https://via.placeholder.com/150'),
                 ),
               ),
               child: Padding(
@@ -149,7 +126,7 @@ class _DetailPageState extends State<DetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.name ?? "Product name",
+                          widget.product['kost_name'] ?? "Product name",
                           style: orderSemiBold.copyWith(fontSize: 24),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -167,7 +144,7 @@ class _DetailPageState extends State<DetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.type,
+                          widget.product['kost_type'],
                           style: orderLight.copyWith(
                             fontSize: 18,
                             color: Color(0xffA5A5A5),
@@ -226,7 +203,7 @@ class _DetailPageState extends State<DetailPage> {
                     Row(
                       children: [
                         Text(
-                          ('${widget.bed} Master Bed'),
+                          ('${widget.product['kost_master_bed']} Master Bed'),
                           style: orderLight.copyWith(
                               fontSize: 14, color: Color(0xFF525252)),
                         ),
@@ -234,7 +211,7 @@ class _DetailPageState extends State<DetailPage> {
                           width: 46,
                         ),
                         Text(
-                          ('${widget.bath} Bathrooms'),
+                          ('${widget.product['bathrooms']} Bathrooms'),
                           style: orderLight.copyWith(
                               fontSize: 14, color: Color(0xFF525252)),
                         ),
@@ -242,7 +219,7 @@ class _DetailPageState extends State<DetailPage> {
                           width: 46,
                         ),
                         Text(
-                          ('${widget.kitchen} Kitchen'),
+                          ('${widget.product['kost_kitchen']} Kitchen'),
                           style: orderLight.copyWith(
                               fontSize: 14, color: Color(0xFF525252)),
                         ),
@@ -336,7 +313,7 @@ class _DetailPageState extends State<DetailPage> {
                           color: Color(0xFF868686),
                         ),
                         Text(
-                          widget.location ?? "loading",
+                          widget.product['kost_location'] ?? "loading",
                           style: orderRegular.copyWith(
                             fontSize: 19,
                             color: Color(0xFF868686),

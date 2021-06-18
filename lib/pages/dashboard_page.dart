@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:golekos/pages/login_page.dart';
+import 'package:golekos/services/auth_services.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/list_boarding_houses.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,26 +17,19 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  var singleProduct;
   int productRadius = 0;
-  List<Product> product = [];
 
   TextEditingController searchProduct = TextEditingController();
 
   @override
   void initState() {
-    // Get data when the first page loads
-    retrieveData();
     super.initState();
   }
 
-  void retrieveData([String search = '']) async {
+  Future getAllProduct([String search = '']) async {
     var result = await Product.getProduct(name: search);
-    if (result != null) {
-      product = result;
-    }
-    if (this.mounted) {
-      setState(() {});
-    }
+    return result;
   }
 
   @override
@@ -60,7 +55,9 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   children: [
                     Text(
-                      (widget.user.email ?? "Guest"),
+                      (widget.user?.email != null)
+                          ? widget.user.email
+                          : 'Guest',
                       style: orderRegular.copyWith(
                           fontSize: 13, color: Color(0xff040507)),
                       overflow: TextOverflow.ellipsis,
@@ -116,7 +113,7 @@ class _DashboardState extends State<Dashboard> {
 
                     TextField(
                       controller: searchProduct,
-                      onChanged: retrieveData,
+                      onChanged: getAllProduct,
                       decoration: InputDecoration(
                         // textfield hint
 
@@ -181,44 +178,98 @@ class _DashboardState extends State<Dashboard> {
                     MediaQuery.removePadding(
                       context: context,
                       removeTop: true,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: product.length,
-                        itemBuilder: (context, pos) {
-                          try {
-                            if (pos == 0) {
-                              // Jika posisi saat ini '0', maka aktifkan radius top
-                              productRadius = 1;
-                            } else if (pos == (product.length - 1)) {
-                              // Jika posisi saat ini sama dengan jumlah data, maka aktifkan radius bottom
-                              productRadius = 2;
-                            } else {
-                              // Jika tidak keduanya, maka nonaktifkan radius
-                              productRadius = 0;
-                            }
-                          } catch (e) {
-                            print(e.toString());
+                      child: FutureBuilder(
+                        builder: (context, snap) {
+                          if (snap.connectionState == ConnectionState.done) {
+                            return ListView.builder(
+                              itemCount: snap.data?.length ?? 0,
+                              itemBuilder: (context, pos) {
+                                singleProduct = null;
+                                Product retrieveProduct = snap.data[pos];
+
+                                try {
+                                  if (pos == 0) {
+                                    // Jika saat ini di posisi pertama, maka aktifkan radius top
+                                    productRadius = 1;
+                                  } else if (pos == (snap.data.length - 1)) {
+                                    // Jika saat ini di posisi terakhir, maka aktifkan radius bottom
+                                    productRadius = 2;
+                                  } else {
+                                    // Jika tidak keduanya, maka nonaktifkan radius [kotak polosan]
+                                    productRadius = 0;
+                                  }
+                                } catch (e) {
+                                  print(e.toString());
+                                }
+
+                                singleProduct = {
+                                  'kost_id': retrieveProduct.id,
+                                  'kost_name': retrieveProduct.name,
+                                  'kost_type': retrieveProduct.type,
+                                  'kost_desc': retrieveProduct.desc,
+                                  'kost_master_bed':
+                                      retrieveProduct.numberOfBed,
+                                  'kost_bathrooms':
+                                      retrieveProduct.numberOfBath,
+                                  'kost_kitchen':
+                                      retrieveProduct.numberOfKitchen,
+                                  'kost_wifi_ready': retrieveProduct.wifiReady,
+                                  'kost_owner': retrieveProduct.owner,
+                                  'kost_owner_phone':
+                                      retrieveProduct.ownerPhone,
+                                  'kost_images': retrieveProduct.imageUrl,
+                                  'kost_price_per_month': retrieveProduct.price,
+                                  'kost_location': retrieveProduct.location,
+                                  'kost_stock': retrieveProduct.qty
+                                };
+
+                                return BoardingHouses(
+                                  product: singleProduct,
+                                  detector: productRadius,
+                                );
+                              },
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                            );
                           }
 
-                          return BoardingHouses(
-                            id: product[pos].id,
-                            name: product[pos].name,
-                            bed: product[pos].numberOfBed,
-                            bath: product[pos].numberOfBath,
-                            kitchen: product[pos].numberOfKitchen,
-                            location: product[pos].location,
-                            type: product[pos].type,
-                            price: product[pos].price,
-                            imageUrl: product[pos].imageUrl,
-                            detector: productRadius,
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Loading..',
+                                    style: orderRegular.copyWith(
+                                      fontSize: 18,
+                                      color: Color(0xff040507),
+                                    )),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                CircularProgressIndicator(),
+                              ],
+                            ),
                           );
                         },
+                        future: getAllProduct(),
                       ),
                     ),
 
                     // The distance between the product list and bottom navigation
 
+                    SizedBox(
+                      height: 16,
+                    ),
+
+                    ElevatedButton(
+                        onPressed: () {
+                          AuthService.signOut();
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) {
+                            return LoginPage();
+                          }), (route) => false);
+                        },
+                        child: Text('logout')),
+                    Text(widget.user?.uid ?? 'uid'),
                     SizedBox(
                       height: 16,
                     ),

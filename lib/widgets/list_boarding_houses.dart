@@ -4,27 +4,9 @@ import '../theme.dart';
 import 'package:intl/intl.dart';
 
 class BoardingHouses extends StatelessWidget {
-  const BoardingHouses(
-      {this.id,
-      this.name,
-      this.bed,
-      this.bath,
-      this.kitchen,
-      this.location,
-      this.type,
-      this.price,
-      this.ownerName,
-      this.ownerPhone,
-      this.imageUrl,
-      this.detector});
+  const BoardingHouses({this.product, this.detector});
 
-  final String name, type, imageUrl, location, ownerName;
-  final int id;
-  final int price;
-  final int bed;
-  final int bath;
-  final int kitchen;
-  final int ownerPhone;
+  final product;
   final int detector; // value-nya buat ngatur border radius
 
   @override
@@ -39,17 +21,8 @@ class BoardingHouses extends StatelessWidget {
         // TODO: Add activity here
 
         onTap: () {
-          MaterialPageRoute route = MaterialPageRoute(
-              builder: (_) => DetailPage(
-                  id: id,
-                  name: name,
-                  location: location,
-                  bed: bed,
-                  bath: bath,
-                  kitchen: kitchen,
-                  price: price,
-                  type: type,
-                  imageUrl: imageUrl));
+          MaterialPageRoute route =
+              MaterialPageRoute(builder: (_) => DetailPage(product));
           Navigator.push(context, route);
         },
         contentPadding: EdgeInsets.all(16),
@@ -58,7 +31,7 @@ class BoardingHouses extends StatelessWidget {
             Container(
               width: 120, // Jarak biar ngga terlalu over
               child: Text(
-                name ?? "Product name",
+                product['kost_name'] ?? "Product name",
                 style: orderMedium.copyWith(
                     fontSize: 16, color: Color(0xff040507)),
                 overflow: TextOverflow.ellipsis,
@@ -66,7 +39,7 @@ class BoardingHouses extends StatelessWidget {
             ),
             Spacer(),
             Text(
-              'Rp ${currencyFormat.format(price) ?? 0}',
+              'Rp ${currencyFormat.format(product['kost_price_per_month']) ?? 0}',
               style:
                   orderMedium.copyWith(fontSize: 16, color: Color(0xff040507)),
             ),
@@ -75,7 +48,7 @@ class BoardingHouses extends StatelessWidget {
         subtitle: Row(
           children: [
             Text(
-              type ?? "Product type",
+              product['kost_type'] ?? "Product type",
               style:
                   orderLight.copyWith(fontSize: 12, color: Color(0xffA5A5A5)),
             ),
@@ -90,7 +63,7 @@ class BoardingHouses extends StatelessWidget {
         leading: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.network(
-              imageUrl ?? 'https://via.placeholder.com/150',
+              product['kost_images'] ?? 'https://via.placeholder.com/150',
               width: 60,
               height: 60,
               fit: BoxFit.cover,
