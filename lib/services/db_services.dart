@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 final CollectionReference orders =
     FirebaseFirestore.instance.collection('orders');
@@ -16,6 +19,6 @@ class DatabaseServices {
   }
 
   static Stream<QuerySnapshot> orderStream() {
-    return orders.orderBy('createdAt').snapshots();
+    return orders.where('userID', isEqualTo: _auth.currentUser.uid).snapshots();
   }
 }
