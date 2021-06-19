@@ -211,7 +211,7 @@ class _DetailPageState extends State<DetailPage> {
                           width: 46,
                         ),
                         Text(
-                          ('${widget.product['bathrooms']} Bathrooms'),
+                          ('${widget.product['kost_bathrooms']} Bathrooms'),
                           style: orderLight.copyWith(
                               fontSize: 14, color: Color(0xFF525252)),
                         ),
@@ -299,6 +299,29 @@ class _DetailPageState extends State<DetailPage> {
                     SizedBox(
                       height: 20,
                     ),
+
+                    Text(
+                      "Description",
+                      style: orderBold.copyWith(fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          widget.product['kost_desc'] ?? "loading",
+                          style: orderRegular.copyWith(
+                            fontSize: 14,
+                            color: Color(0xFF868686),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       "Location",
                       style: orderBold.copyWith(fontSize: 16),
@@ -312,15 +335,18 @@ class _DetailPageState extends State<DetailPage> {
                           Icons.location_on_outlined,
                           color: Color(0xFF868686),
                         ),
+                        SizedBox(
+                          width: 8,
+                        ),
                         Text(
                           widget.product['kost_location'] ?? "loading",
                           style: orderRegular.copyWith(
-                            fontSize: 19,
+                            fontSize: 14,
                             color: Color(0xFF868686),
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
