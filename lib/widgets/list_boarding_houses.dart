@@ -29,7 +29,7 @@ class BoardingHouses extends StatelessWidget {
         title: Row(
           children: [
             Container(
-              width: 120, // Jarak biar ngga terlalu over
+              width: 150, // Jarak biar ngga terlalu over
               child: Text(
                 product['kost_name'] ?? "Product name",
                 style: orderMedium.copyWith(
