@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:golekos/services/db_services.dart';
 import 'package:golekos/theme.dart';
-import 'package:golekos/widgets/profile_tab.dart';
+import '../widgets/card_tile.dart';
+import '../models/product.dart';
 
 class Profile extends StatefulWidget {
   final User user;
@@ -11,15 +14,7 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
-  TabController tabController;
-
-  @override
-  void initState() {
-    tabController = TabController(length: 2, vsync: this);
-    super.initState();
-  }
-
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     // Navigation bar
@@ -110,48 +105,69 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
       // Transaction section
 
-      TabBar(
-        controller: tabController,
-        labelColor: Color(0xff312651),
-        unselectedLabelColor: Color(0xff858496),
-        tabs: [
-          Tab(
-            child: Text(
-              'My Transaction(2)',
-              style: orderSemiBold.copyWith(fontSize: 16),
-            ),
-          ),
-          Tab(
-            child: Text(
-              'My Reviews(9)',
-              style: orderSemiBold.copyWith(fontSize: 16),
-            ),
-          ),
-        ],
-        indicatorSize: TabBarIndicatorSize.label,
-        indicator: UnderlineTabIndicator(
-            borderSide: BorderSide(
-                color: Color(0xff312651), width: 4, style: BorderStyle.solid)),
-      ),
       SizedBox(
         height: 20,
       ),
       Expanded(
         child: Container(
           padding: EdgeInsets.all(30),
-          child: TabBarView(
-            controller: tabController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ProfileTab('Transaction',
-                  title: 'Blue Fast',
-                  subTitle: 'Purchase | 18 Jul 2020',
-                  note: 'IDR 99.000',
-                  imgUrl: 'assets/images/pic.png'),
-              ProfileTab('Reviews',
-                  title: 'Blue F.. Reviews',
-                  subTitle: 'Hi, nice to meet you',
-                  note: 'Months Ago',
-                  imgUrl: 'assets/images/pic.png'),
+              Text(
+                'Transaction',
+                style: orderSemiBold.copyWith(
+                    fontSize: 16, color: Color(0xff000000)),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                  child: Container(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: DatabaseServices.orderStream(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snap) {
+                    if (snap.hasError) {
+                      return Center(
+                        child:
+                            Text('Failed to load transaction data, try again'),
+                      );
+                    }
+
+                    if (snap.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Loading..'),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            CircularProgressIndicator(),
+                          ],
+                        ),
+                      );
+                    }
+
+                    if (snap.hasData) {
+                      return ListView(
+                        shrinkWrap: true,
+                        children: snap.data.docs.map((DocumentSnapshot doc) {
+                          Map<String, dynamic> data =
+                              doc.data() as Map<String, dynamic>;
+
+                          return CardTile(object: data);
+                        }).toList(),
+                      );
+                    } else {
+                      return Center(
+                        child: Text('No data here'),
+                      );
+                    }
+                  },
+                ),
+              )),
             ],
           ),
           width: double.infinity,
@@ -162,9 +178,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         ),
       ),
     ];
-
-    // MAIN
-    // TODO: Create Backend for Profile and Transaction
 
     return Scaffold(
       backgroundColor: Color(0xff29D5F8),
