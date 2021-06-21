@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:golekos/pages/detail_page.dart';
 import '../theme.dart';
 import 'package:intl/intl.dart';
 
 class BoardingHouses extends StatelessWidget {
-  const BoardingHouses({this.product, this.detector});
+  const BoardingHouses({this.product, this.detector, this.user});
 
+  final User user;
   final product;
   final int detector; // value-nya buat ngatur border radius
 
@@ -21,8 +23,11 @@ class BoardingHouses extends StatelessWidget {
         // TODO: Add activity here
 
         onTap: () {
-          MaterialPageRoute route =
-              MaterialPageRoute(builder: (_) => DetailPage(product));
+          MaterialPageRoute route = MaterialPageRoute(
+              builder: (_) => DetailPage(
+                    product,
+                    user: user,
+                  ));
           Navigator.push(context, route);
         },
         contentPadding: EdgeInsets.all(16),
