@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:golekos/models/product.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/order_summary_row.dart';
 
 enum payment { transfer, onsite }
 
 class OrderDetails extends StatefulWidget {
+  OrderDetails({this.object});
+
+  final Map<String, dynamic> object;
   @override
   _OrderDetailsState createState() => _OrderDetailsState();
 }
@@ -13,7 +17,9 @@ class _OrderDetailsState extends State<OrderDetails> {
   payment paymentSelect = payment.onsite;
 
   String paymentSelected = 'onsite';
-
+  String img;
+  String kostName;
+  String type;
   selectAPayment(value) {
     switch (paymentSelect) {
       case payment.transfer:
@@ -25,6 +31,23 @@ class _OrderDetailsState extends State<OrderDetails> {
         setState(() {});
         break;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getKost(widget.object['kostID']).then((value) {
+      setState(() {
+        kostName = value.name;
+        img = value.imageUrl;
+        type = value.type;
+      });
+    });
+  }
+
+  Future<Product> getKost(int id) async {
+    var productById = await Product.getProductById(id);
+    return productById;
   }
 
   @override
@@ -96,9 +119,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Fukko Cozy',
-                                style: orderRegular.copyWith(color: orderBlack),
+                              Container(
+                                width: 300,
+                                child: Text(
+                                  kostName ?? "name",
+                                  overflow: TextOverflow.ellipsis,
+                                  style:
+                                      orderRegular.copyWith(color: orderBlack),
+                                ),
                               ),
                               SizedBox(
                                 height: 2,

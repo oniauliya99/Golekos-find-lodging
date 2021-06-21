@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:golekos/pages/order_details_page.dart';
 import '../theme.dart';
 import '../models/product.dart';
 
@@ -36,7 +37,13 @@ class _CardTileState extends State<CardTile> {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-          onTap: () {},
+          onTap: () {
+            MaterialPageRoute route = MaterialPageRoute(
+                builder: (_) => OrderDetails(
+                      object: widget.object,
+                    ));
+            Navigator.push(context, route);
+          },
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
