@@ -296,7 +296,7 @@ class _BookingInfoState extends State<BookingInfo> {
 
                       DatabaseServices.addOrder(orders).then((_) {
                         var route = MaterialPageRoute(builder: (_) {
-                          return ButtomBar();
+                          return ButtomBar(user: user);
                         });
 
                         print('Success');
