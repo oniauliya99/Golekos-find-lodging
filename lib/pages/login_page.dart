@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:golekos/pages/sign_up_page.dart';
 import 'package:golekos/services/auth_services.dart';
@@ -10,9 +11,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool paswordVisible = false;
+  bool paswordVisible = true;
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final form2Key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,21 +150,32 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.only(left: 30, right: 30, top: 20),
                 height: 60,
-                child: Container(
-                  margin: EdgeInsets.only(left: 20),
-                  alignment: Alignment.center,
-                  child: new TextFormField(
-                    controller: email,
-                    keyboardType: TextInputType.text,
-                    style: orderRegular.copyWith(fontSize: 20),
-                    decoration: InputDecoration(
-                        hintText: 'E-mail',
-                        hintStyle: orderRegular.copyWith(
-                          fontSize: 20,
-                          color: Color(0x6C383737),
-                        ),
-                        border: InputBorder.none),
-                    onChanged: (value) {},
+                child: Form(
+                  key: formKey,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 20),
+                    alignment: Alignment.center,
+                    child: new TextFormField(
+                      controller: email,
+                      keyboardType: TextInputType.text,
+                      style: orderRegular.copyWith(fontSize: 20),
+                      decoration: InputDecoration(
+                          hintText: 'E-mail',
+                          suffixIcon: email.text.isEmpty
+                              ? Container(width: 0)
+                              : IconButton(
+                                  icon: Icon(Icons.close),
+                                  onPressed: () => email.clear()),
+                          hintStyle: orderRegular.copyWith(
+                            fontSize: 20,
+                            color: Color(0x6C383737),
+                          ),
+                          border: InputBorder.none),
+                      onChanged: (value) {},
+                      validator: (value) => EmailValidator.validate(value)
+                          ? null
+                          : "Please enter a valid email",
+                    ),
                   ),
                 ),
               ),
@@ -173,34 +187,44 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.only(left: 30, right: 30, top: 20),
                 height: 60,
-                child: Container(
-                  margin: EdgeInsets.only(left: 20),
-                  alignment: Alignment.center,
-                  child: new TextFormField(
-                    controller: password,
-                    obscureText: paswordVisible,
-                    keyboardType: TextInputType.text,
-                    style: orderRegular.copyWith(fontSize: 20),
-                    decoration: InputDecoration(
-                        hintText: 'Password',
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              paswordVisible = !paswordVisible;
-                            });
-                          },
-                          child: Icon(
-                            (paswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off),
+                child: Form(
+                  key: form2Key,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 20),
+                    alignment: Alignment.center,
+                    child: new TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Empty Field, Please enter some text';
+                        } else if (value.length < 8) {
+                          return 'Must be more than 8 charater';
+                        }
+                      },
+                      controller: password,
+                      obscureText: paswordVisible,
+                      keyboardType: TextInputType.text,
+                      style: orderRegular.copyWith(fontSize: 20),
+                      decoration: InputDecoration(
+                          hintText: 'Password',
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                paswordVisible = !paswordVisible;
+                              });
+                            },
+                            child: Icon(
+                              (paswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
+                            ),
                           ),
-                        ),
-                        hintStyle: orderRegular.copyWith(
-                          fontSize: 20,
-                          color: Color(0x6C383737),
-                        ),
-                        border: InputBorder.none),
-                    onChanged: (value) {},
+                          hintStyle: orderRegular.copyWith(
+                            fontSize: 20,
+                            color: Color(0x6C383737),
+                          ),
+                          border: InputBorder.none),
+                      onChanged: (value) {},
+                    ),
                   ),
                 ),
               ),
@@ -228,16 +252,20 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onTap: () async {
-                          AuthService.signInWithEmailAndPassword(
-                                  email.text, password.text)
-                              .then((result) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Wrapper(),
-                              ),
-                            );
-                          });
+                          final form = formKey.currentState;
+                          final form2 = form2Key.currentState;
+                          if (form.validate() && form2.validate()) {
+                            AuthService.signInWithEmailAndPassword(
+                                    email.text, password.text)
+                                .then((result) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Wrapper(),
+                                ),
+                              );
+                            });
+                          }
                         },
                       ),
                     ],

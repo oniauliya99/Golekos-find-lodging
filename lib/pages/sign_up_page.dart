@@ -99,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   color: Color(0xFFEEEEEE),
                   borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.only(left: 40, right: 40, bottom: 17),
-              height: 60,
+              height: 90,
               child: Form(
                 key: form2Key,
                 child: Container(
