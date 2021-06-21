@@ -18,7 +18,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   payment paymentSelect = payment.onsite;
 
   String paymentSelected = 'onsite';
-  String img = "";
+  String img = "https://via.placeholder.com/150";
   String kostName = "";
   String type = "";
   String owner = "";
