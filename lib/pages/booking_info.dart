@@ -4,6 +4,7 @@ import 'package:golekos/pages/buttom_bar.dart';
 import 'package:golekos/services/db_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 import '../theme.dart';
 
 class BookingInfo extends StatefulWidget {
@@ -16,18 +17,35 @@ class BookingInfo extends StatefulWidget {
 }
 
 class _BookingInfoState extends State<BookingInfo> {
+  int totalPay = 0;
+
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
-  TextEditingController longStay = TextEditingController();
+  TextEditingController longStay = TextEditingController(text: '1');
 
   @override
   void initState() {
     super.initState();
+    totalPay =
+        int.tryParse(longStay.text) * widget.product['kost_price_per_month'];
+  }
+
+  void defaultLongStay(String value) {
+    setState(() {
+      try {
+        totalPay = int.tryParse(longStay.text) *
+            widget.product['kost_price_per_month'];
+      } catch (e) {
+        print(e.toString());
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final currencyFormat = NumberFormat("#,##0", "en_US");
+
     User user = Provider.of<User>(context);
 
     if (user.email != null) {
@@ -39,6 +57,7 @@ class _BookingInfoState extends State<BookingInfo> {
     } else {
       name.text = (user.email).substring(0, (user.email).indexOf("@"));
     }
+
     // First stack
 
     var ovalImages = Align(
@@ -189,6 +208,7 @@ class _BookingInfoState extends State<BookingInfo> {
                         keyboardType: TextInputType.number,
                         style: orderRegular.copyWith(
                             fontSize: 14, color: Colors.black.withOpacity(0.5)),
+                        onChanged: defaultLongStay,
                       ),
                     ],
                   ),
@@ -304,7 +324,7 @@ class _BookingInfoState extends State<BookingInfo> {
                             .pushAndRemoveUntil(route, (route) => false);
                       });
                     },
-                    child: Text('Check out'),
+                    child: Text('Pay Rp. ${currencyFormat.format(totalPay)}'),
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xffFFC33A),
                       shadowColor: Colors.transparent,
