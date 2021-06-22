@@ -64,31 +64,33 @@ class _SignUpPageState extends State<SignUpPage> {
                   color: Color(0xFFEEEEEE),
                   borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.only(left: 40, right: 40, bottom: 17),
-              height: 90,
+              height: 60,
               width: 90,
               child: Form(
                 key: formKey,
                 child: Column(
                   children: [
-                    new TextFormField(
-                      controller: email,
-                      style: orderRegular.copyWith(fontSize: 20),
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 2, 5),
-                        hintText: 'Email address',
-                        suffixIcon: email.text.isEmpty
-                            ? Container(width: 0)
-                            : IconButton(
-                                icon: Icon(Icons.close),
-                                onPressed: () => email.clear()),
-                        hintStyle: orderRegular.copyWith(
-                            fontSize: 20, color: Color(0x6C383737)),
-                        border: InputBorder.none,
+                    Expanded(
+                      child: new TextFormField(
+                        controller: email,
+                        style: orderRegular.copyWith(fontSize: 20),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 2, 5),
+                          hintText: 'Email address',
+                          suffixIcon: email.text.isEmpty
+                              ? Container(width: 0)
+                              : IconButton(
+                                  icon: Icon(Icons.close),
+                                  onPressed: () => email.clear()),
+                          hintStyle: orderRegular.copyWith(
+                              fontSize: 20, color: Color(0x6C383737)),
+                          border: InputBorder.none,
+                        ),
+                        onChanged: (value) {},
+                        validator: (value) => EmailValidator.validate(value)
+                            ? null
+                            : "Please enter a valid email",
                       ),
-                      onChanged: (value) {},
-                      validator: (value) => EmailValidator.validate(value)
-                          ? null
-                          : "Please enter a valid email",
                     ),
                   ],
                 ),
@@ -99,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   color: Color(0xFFEEEEEE),
                   borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.only(left: 40, right: 40, bottom: 17),
-              height: 90,
+              height: 60,
               child: Form(
                 key: form2Key,
                 child: Container(
