@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:golekos/services/auth_services.dart';
 import 'package:golekos/services/db_services.dart';
 import 'package:golekos/theme.dart';
+import 'package:golekos/wrapper.dart';
 import '../widgets/card_tile.dart';
 import '../models/product.dart';
+import 'login_page.dart';
 
 class Profile extends StatefulWidget {
   final User user;
@@ -17,26 +20,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    // Navigation bar
-
-    var navigation = Column(
-      children: [
-        SizedBox(
-          height: 190,
-        ),
-
-        // White background
-
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color(0xffF3F4F8),
-            ),
-          ),
-        ),
-      ],
-    );
-
     // Profile Section
 
     var profileSection = Container(
@@ -62,14 +45,14 @@ class _ProfileState extends State<Profile> {
               Text(
                 widget.user?.email ?? 'Guest',
                 style: orderSemiBold.copyWith(
-                    fontSize: 20, color: Color(0xff000000)),
+                    fontSize: 20, color: Color(0xFFFFFFFF)),
               ),
               SizedBox(
                 height: 6,
               ),
               Text(
                 'Mahasiswa',
-                style: orderRegular.copyWith(color: Color(0xff858496)),
+                style: orderRegular.copyWith(color: Color(0xFFC7C7C9)),
               ),
               SizedBox(
                 height: 12,
@@ -82,25 +65,20 @@ class _ProfileState extends State<Profile> {
           ),
         ],
       ),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Color(0xffffffff),
-        borderRadius: BorderRadius.all(Radius.circular(30)),
-      ),
     );
 
     // Transaction Section
 
     var transactionSection = [
       SizedBox(
-        height: 90,
+        height: 120,
       ),
 
       // Profile section
       profileSection,
 
       SizedBox(
-        height: 50,
+        height: 20,
       ),
 
       // Transaction section
@@ -123,51 +101,52 @@ class _ProfileState extends State<Profile> {
                 height: 20,
               ),
               Expanded(
-                  child: Container(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: DatabaseServices.orderStream(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snap) {
-                    if (snap.hasError) {
-                      return Center(
-                        child:
-                            Text('Failed to load transaction data, try again'),
-                      );
-                    }
+                child: Container(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: DatabaseServices.orderStream(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snap) {
+                      if (snap.hasError) {
+                        return Center(
+                          child: Text(
+                              'Failed to load transaction data, try again'),
+                        );
+                      }
 
-                    if (snap.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Loading..'),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            CircularProgressIndicator(),
-                          ],
-                        ),
-                      );
-                    }
+                      if (snap.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Loading..'),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              CircularProgressIndicator(),
+                            ],
+                          ),
+                        );
+                      }
 
-                    if (snap.hasData) {
-                      return ListView(
-                        shrinkWrap: true,
-                        children: snap.data.docs.map((DocumentSnapshot doc) {
-                          Map<String, dynamic> data =
-                              doc.data() as Map<String, dynamic>;
+                      if (snap.hasData) {
+                        return ListView(
+                          shrinkWrap: true,
+                          children: snap.data.docs.map((DocumentSnapshot doc) {
+                            Map<String, dynamic> data =
+                                doc.data() as Map<String, dynamic>;
 
-                          return CardTile(object: data);
-                        }).toList(),
-                      );
-                    } else {
-                      return Center(
-                        child: Text('No data here'),
-                      );
-                    }
-                  },
+                            return CardTile(object: data);
+                          }).toList(),
+                        );
+                      } else {
+                        return Center(
+                          child: Text('No data here'),
+                        );
+                      }
+                    },
+                  ),
                 ),
-              )),
+              ),
             ],
           ),
           width: double.infinity,
@@ -180,19 +159,36 @@ class _ProfileState extends State<Profile> {
     ];
 
     return Scaffold(
-      backgroundColor: Color(0xff29D5F8),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            // Navigation bar - First layer
-            navigation,
-
-            // Profile and Transaction - Second layer
-            Column(
-              children: transactionSection,
+      body: Stack(
+        children: [
+          Image.asset('assets/images/bg_profile.png'),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                    icon: Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      AuthService.signOut();
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) {
+                        return LoginPage();
+                      }), (route) => false);
+                    }),
+              ],
             ),
-          ],
-        ),
+          ),
+          // Navigation bar - First layer
+          // Profile and Transaction - Second layer
+          Column(
+            children: transactionSection,
+          ),
+        ],
       ),
     );
   }
