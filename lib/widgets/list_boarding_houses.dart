@@ -45,8 +45,7 @@ class BoardingHouses extends StatelessWidget {
             Spacer(),
             Text(
               'Rp ${currencyFormat.format(product['kost_price_per_month']) ?? 0}',
-              style:
-                  orderMedium.copyWith(fontSize: 16, color: Color(0xff040507)),
+              style: orderBold.copyWith(fontSize: 14, color: Color(0xff040507)),
             ),
           ],
         ),
