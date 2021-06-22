@@ -320,6 +320,7 @@ class _BookingInfoState extends State<BookingInfo> {
                         'total': widget.product['kost_price_per_month'] *
                             int.tryParse(longStay.text),
                         'paid': false,
+                        'payment': 'unregistered',
                         'createdAt': DateTime.now().toString()
                       };
 
