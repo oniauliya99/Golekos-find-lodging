@@ -363,83 +363,85 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ),
               ],
             ),
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // PLEASE READ BEFORE PAYMENT
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // PLEASE READ BEFORE PAYMENT
 
-                Text(
-                  'PLEASE READ !!!\n\n If you make a transaction in the Golekos application, it means that you have complied with the policies made by ORITech Corporation. Anything prohibited will be the responsibility of the user. If you agree to these rules, you may transfer payments to the following account.',
-                  style: orderRegular.copyWith(color: Colors.grey),
-                  textAlign: TextAlign.justify,
-                ),
+                  Text(
+                    'PLEASE READ !!!\n\n If you make a transaction in the Golekos application, it means that you have complied with the policies made by ORITech Corporation. Anything prohibited will be the responsibility of the user. If you agree to these rules, you may transfer payments to the following account.',
+                    style: orderRegular.copyWith(color: Colors.grey),
+                    textAlign: TextAlign.justify,
+                  ),
 
-                SizedBox(
-                  height: 10,
-                ),
-                Divider(
-                  color: Colors.grey.withOpacity(0.5),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    color: Colors.grey.withOpacity(0.5),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
 
-                Text(
-                  'BANK ACCOUNT',
-                  style: orderBold.copyWith(color: Colors.blueAccent),
-                ),
+                  Text(
+                    'BANK ACCOUNT',
+                    style: orderBold.copyWith(color: Colors.blueAccent),
+                  ),
 
-                SizedBox(
-                  height: 10,
-                ),
+                  SizedBox(
+                    height: 10,
+                  ),
 
-                // BANK INFORMATION
+                  // BANK INFORMATION
 
-                accountInformation('BCA', '2190249328'),
-                accountInformation('MANDISENDIRI', '0948974959'),
-                accountInformation('BNI', '0213099034'),
+                  accountInformation('BCA', '2190249328'),
+                  accountInformation('MANDISENDIRI', '0948974959'),
+                  accountInformation('BNI', '0213099034'),
 
-                SizedBox(
-                  height: 10,
-                ),
-                Divider(
-                  color: Colors.grey.withOpacity(0.5),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    color: Colors.grey.withOpacity(0.5),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
 
-                Text(
-                  'CONFIRM PAYMENT',
-                  style: orderBold.copyWith(color: Colors.blueAccent),
-                ),
+                  Text(
+                    'CONFIRM PAYMENT',
+                    style: orderBold.copyWith(color: Colors.blueAccent),
+                  ),
 
-                SizedBox(
-                  height: 10,
-                ),
+                  SizedBox(
+                    height: 10,
+                  ),
 
-                Text(
-                  'Confirm your payment to the following number',
-                  style: orderRegular.copyWith(color: Colors.grey),
-                  textAlign: TextAlign.justify,
-                ),
+                  Text(
+                    'Confirm your payment to the following number',
+                    style: orderRegular.copyWith(color: Colors.grey),
+                    textAlign: TextAlign.justify,
+                  ),
 
-                SizedBox(
-                  height: 10,
-                ),
+                  SizedBox(
+                    height: 10,
+                  ),
 
-                accountInformation('Oni chan', '08310309434'),
-                accountInformation('Irfan kun', '08920309439'),
-                accountInformation('Ridlo sama', '08101434983'),
+                  accountInformation('Oni chan', '08310309434'),
+                  accountInformation('Irfan kun', '08920309439'),
+                  accountInformation('Ridlo sama', '08101434983'),
 
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  '*Hint: hold the account number to copy',
-                  style: orderRegular.copyWith(color: Colors.black45),
-                ),
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    '*Hint: hold the account number to copy',
+                    style: orderRegular.copyWith(color: Colors.black45),
+                  ),
+                ],
+              ),
             ),
             actions: [
               TextButton(
