@@ -244,84 +244,7 @@ class _OrderDetailsState extends State<OrderDetails> {
 
                       TextButton(
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return AlertDialog(
-                                    content: Stack(
-                                      clipBehavior: Clip.hardEdge,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              'Choose payment',
-                                              style: orderBold.copyWith(
-                                                  color: orderBlack),
-                                            ),
-                                            SizedBox(
-                                              height: 12,
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
-                                                  paymentSelect =
-                                                      payment.transfer;
-                                                  selectAPayment(paymentSelect);
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Image.asset(
-                                                        'assets/images/payment/visa.png',
-                                                        width: 43,
-                                                        height: 26),
-                                                    SizedBox(
-                                                      width: 12,
-                                                    ),
-                                                    Text('Bank transfer',
-                                                        style: orderMedium
-                                                            .copyWith(
-                                                                fontSize: 12,
-                                                                color: Color(
-                                                                    0xff000000))),
-                                                  ],
-                                                )),
-                                            Divider(
-                                              color: Colors.black12,
-                                              height: 2,
-                                            ),
-                                            TextButton(
-                                                onPressed: () {
-                                                  paymentSelect =
-                                                      payment.onsite;
-                                                  selectAPayment(paymentSelect);
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Image.asset(
-                                                        'assets/images/payment/visa.png',
-                                                        width: 43,
-                                                        height: 26),
-                                                    SizedBox(
-                                                      width: 12,
-                                                    ),
-                                                    Text('Onsite',
-                                                        style: orderMedium
-                                                            .copyWith(
-                                                                fontSize: 12,
-                                                                color: Color(
-                                                                    0xff000000))),
-                                                  ],
-                                                )),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                });
+                            choosePaymentDialog(context);
                           },
                           child: Row(
                             children: [
@@ -378,8 +301,13 @@ class _OrderDetailsState extends State<OrderDetails> {
                       Container(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text('PAY'),
+                          onPressed: () {
+                            paymentInformation(context);
+                          },
+                          child: Text(
+                              (widget.object['payment'] == 'unregistered')
+                                  ? 'PLEASE CHOOSE YOUR PAYMENT'
+                                  : 'PAY'),
                           style: ElevatedButton.styleFrom(
                             primary: Color(0xffFFC33A),
                             padding: EdgeInsets.symmetric(
@@ -411,5 +339,202 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> paymentInformation(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Row(
+              children: [
+                Icon(
+                  Icons.payment,
+                  color: Colors.blue,
+                  size: 15,
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  'Payment Information',
+                  style: orderBold.copyWith(
+                      fontSize: 14, color: Colors.blueAccent),
+                ),
+              ],
+            ),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // PLEASE READ BEFORE PAYMENT
+
+                Text(
+                  'PLEASE READ !!!\n\n If you make a transaction in the Golekos application, it means that you have complied with the policies made by ORITech Corporation. Anything prohibited will be the responsibility of the user. If you agree to these rules, you may transfer payments to the following account.',
+                  style: orderRegular.copyWith(color: Colors.grey),
+                  textAlign: TextAlign.justify,
+                ),
+
+                SizedBox(
+                  height: 10,
+                ),
+                Divider(
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                Text(
+                  'BANK ACCOUNT',
+                  style: orderBold.copyWith(color: Colors.blueAccent),
+                ),
+
+                SizedBox(
+                  height: 10,
+                ),
+
+                // BANK INFORMATION
+
+                accountInformation('BCA', '2190249328'),
+                accountInformation('MANDISENDIRI', '0948974959'),
+                accountInformation('BNI', '0213099034'),
+
+                SizedBox(
+                  height: 10,
+                ),
+                Divider(
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                Text(
+                  'CONFIRM PAYMENT',
+                  style: orderBold.copyWith(color: Colors.blueAccent),
+                ),
+
+                SizedBox(
+                  height: 10,
+                ),
+
+                Text(
+                  'Confirm your payment to the following number',
+                  style: orderRegular.copyWith(color: Colors.grey),
+                  textAlign: TextAlign.justify,
+                ),
+
+                SizedBox(
+                  height: 10,
+                ),
+
+                accountInformation('Oni chan', '08310309434'),
+                accountInformation('Irfan kun', '08920309439'),
+                accountInformation('Ridlo sama', '08101434983'),
+
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  '*Hint: hold the account number to copy',
+                  style: orderRegular.copyWith(color: Colors.black45),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Done')),
+            ],
+          );
+        });
+  }
+
+  accountInformation(String name, String number) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            name,
+            style: orderBold.copyWith(color: Colors.black54),
+          ),
+          SelectableText(
+            number,
+            style: orderBold.copyWith(color: Colors.blueAccent),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> choosePaymentDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            content: Stack(
+              clipBehavior: Clip.hardEdge,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Choose payment',
+                      style: orderBold.copyWith(color: orderBlack),
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          paymentSelect = payment.transfer;
+                          selectAPayment(paymentSelect);
+                          Navigator.of(context).pop();
+                        },
+                        child: Row(
+                          children: [
+                            Image.asset('assets/images/payment/visa.png',
+                                width: 43, height: 26),
+                            SizedBox(
+                              width: 12,
+                            ),
+                            Text('Bank transfer',
+                                style: orderMedium.copyWith(
+                                    fontSize: 12, color: Color(0xff000000))),
+                          ],
+                        )),
+                    Divider(
+                      color: Colors.black12,
+                      height: 2,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          paymentSelect = payment.onsite;
+                          selectAPayment(paymentSelect);
+                          Navigator.of(context).pop();
+                        },
+                        child: Row(
+                          children: [
+                            Image.asset('assets/images/payment/visa.png',
+                                width: 43, height: 26),
+                            SizedBox(
+                              width: 12,
+                            ),
+                            Text('Onsite',
+                                style: orderMedium.copyWith(
+                                    fontSize: 12, color: Color(0xff000000))),
+                          ],
+                        )),
+                  ],
+                )
+              ],
+            ),
+          );
+        });
   }
 }
