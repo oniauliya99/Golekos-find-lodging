@@ -73,7 +73,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 AppBar(
                   centerTitle: true,
                   title: Text(
-                    'ORDER #12345678',
+                    'ORDER #${widget.object['orderID']}',
                     style: orderBold.copyWith(color: orderBlack),
                   ),
                   leading: IconButton(
