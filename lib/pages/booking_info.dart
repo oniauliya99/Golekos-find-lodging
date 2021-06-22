@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:golekos/pages/buttom_bar.dart';
@@ -300,7 +302,14 @@ class _BookingInfoState extends State<BookingInfo> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
                     onPressed: () async {
+                      // Generate order number
+                      int min = 100000;
+                      int max = 999999;
+                      var randomizer = new Random();
+                      var rNum = min + randomizer.nextInt(max - min);
+
                       var orders = {
+                        'orderID': '$rNum',
                         'kostID': widget.product['kost_id'],
                         'userID': user.uid,
                         'customer_name': name.text,
@@ -324,7 +333,8 @@ class _BookingInfoState extends State<BookingInfo> {
                             .pushAndRemoveUntil(route, (route) => false);
                       });
                     },
-                    child: Text('Pay Rp. ${currencyFormat.format(totalPay)}'),
+                    child: Text(
+                        'Pay Rp. ${currencyFormat.format(totalPay)} + Tax 10%'),
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xffFFC33A),
                       shadowColor: Colors.transparent,
