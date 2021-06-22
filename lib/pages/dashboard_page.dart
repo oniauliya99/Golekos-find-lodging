@@ -260,20 +260,6 @@ class _DashboardState extends State<Dashboard> {
                     SizedBox(
                       height: 16,
                     ),
-
-                    ElevatedButton(
-                        onPressed: () {
-                          AuthService.signOut();
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) {
-                            return LoginPage();
-                          }), (route) => false);
-                        },
-                        child: Text('logout')),
-                    Text(widget.user?.uid ?? 'uid'),
-                    SizedBox(
-                      height: 16,
-                    ),
                   ],
                 ),
               ),
