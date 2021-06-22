@@ -26,16 +26,78 @@ class OrderRow extends StatelessWidget {
                 ? orderBold.copyWith(color: Color(0xff202020))
                 : orderRegular.copyWith(color: orderGrey),
           ),
-          Text(
-            value,
-            style: (isTotal)
-                ? orderBold.copyWith(color: orderGreen)
-                : ((isPaymentStatus)
-                    ? orderBold.copyWith(color: Color(0xffE9421E))
-                    : orderBold.copyWith(color: Color(0xff202020))),
-          ),
+          (isPaymentStatus)
+              ? Row(
+                  // mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        payInfo(context);
+                      },
+                      icon: Icon(Icons.info_outline),
+                      color: Colors.grey.withOpacity(0.5),
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.centerRight,
+                      iconSize: 20,
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      value,
+                      style: (isTotal)
+                          ? orderBold.copyWith(color: orderGreen)
+                          : ((isPaymentStatus)
+                              ? orderBold.copyWith(color: Color(0xffE9421E))
+                              : orderBold.copyWith(color: Color(0xff202020))),
+                    ),
+                  ],
+                )
+              : Text(value,
+                  style: (isTotal)
+                      ? orderBold.copyWith(color: orderGreen)
+                      : ((isPaymentStatus)
+                          ? orderBold.copyWith(color: Color(0xffE9421E))
+                          : orderBold.copyWith(color: Color(0xff202020)))),
         ],
       ),
     );
+  }
+
+  Future<dynamic> payInfo(BuildContext context) {
+    return showDialog(
+        context: (context),
+        builder: (_) {
+          return AlertDialog(
+            title: Row(
+              children: [
+                Icon(
+                  Icons.info,
+                  size: 18,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  'Pay your bill',
+                  style: orderBold.copyWith(
+                      fontSize: 14, color: Colors.blueAccent.withOpacity(0.8)),
+                ),
+              ],
+            ),
+            content: Text(
+              'Please pay before using and call the number listed to confirm your payment',
+              style: orderRegular.copyWith(fontSize: 15, color: Colors.grey),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Done'))
+            ],
+          );
+        });
   }
 }
