@@ -111,6 +111,13 @@ class _ProfileState extends State<Profile> {
                           child: Text(
                               'Failed to load transaction data, try again'),
                         );
+                      } else if (snap.data != null) {
+                        var docLength = snap.data.docs.length;
+                        if (docLength == 0) {
+                          return Center(
+                            child: Text('You don\'t have any transactions'),
+                          );
+                        }
                       }
 
                       if (snap.connectionState == ConnectionState.waiting) {
