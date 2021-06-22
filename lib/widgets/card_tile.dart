@@ -5,8 +5,8 @@ import '../theme.dart';
 import '../models/product.dart';
 
 class CardTile extends StatefulWidget {
-  CardTile({this.object});
-
+  CardTile({this.object, this.onDelete});
+  final Function onDelete;
   final Map<String, dynamic> object;
 
   @override
@@ -43,6 +43,28 @@ class _CardTileState extends State<CardTile> {
                       object: widget.object,
                     ));
             Navigator.push(context, route);
+          },
+          onLongPress: () {
+            setState(() {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                        title: Text('Delete Transaction ?'),
+                        actions: [
+                          MaterialButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Cancel'),
+                          ),
+                          MaterialButton(
+                            onPressed: widget.onDelete,
+                            child: Text('Delete'),
+                          ),
+                        ]);
+                  });
+            });
           },
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(10),
