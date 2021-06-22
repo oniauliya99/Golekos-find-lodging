@@ -226,6 +226,7 @@ class _DashboardState extends State<Dashboard> {
                                 return BoardingHouses(
                                   product: singleProduct,
                                   detector: productRadius,
+                                  user: widget.user,
                                 );
                               },
                               shrinkWrap: true,

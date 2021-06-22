@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:golekos/models/product.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/order_summary_row.dart';
+import 'package:intl/intl.dart';
 
 enum payment { transfer, onsite }
 
@@ -17,9 +18,12 @@ class _OrderDetailsState extends State<OrderDetails> {
   payment paymentSelect = payment.onsite;
 
   String paymentSelected = 'onsite';
-  String img;
-  String kostName;
-  String type;
+  String img = "https://via.placeholder.com/150";
+  String kostName = "";
+  String type = "";
+  String owner = "";
+  String phone = "";
+  int price = 0;
   selectAPayment(value) {
     switch (paymentSelect) {
       case payment.transfer:
@@ -41,6 +45,9 @@ class _OrderDetailsState extends State<OrderDetails> {
         kostName = value.name;
         img = value.imageUrl;
         type = value.type;
+        owner = value.owner;
+        phone = value.ownerPhone;
+        price = value.price;
       });
     });
   }
@@ -52,6 +59,7 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final currencyFormat = NumberFormat("#,##0", "en_US");
     return Scaffold(
       backgroundColor: Color(0xffF2F4F4),
       body: SafeArea(
@@ -107,8 +115,8 @@ class _OrderDetailsState extends State<OrderDetails> {
 
                       Row(
                         children: [
-                          Image.asset(
-                            'assets/images/noproduct.png',
+                          Image.network(
+                            img ?? 'https://via.placeholder.com/150',
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover,
@@ -120,10 +128,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: 300,
+                                width: 200,
                                 child: Text(
                                   kostName ?? "name",
-                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 4,
                                   style:
                                       orderRegular.copyWith(color: orderBlack),
                                 ),
@@ -132,7 +140,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 height: 2,
                               ),
                               Text(
-                                'Wanita',
+                                type ?? "type",
                                 style: orderLight.copyWith(
                                     fontSize: 12, color: Color(0xffA5A5A5)),
                               ),
@@ -155,11 +163,11 @@ class _OrderDetailsState extends State<OrderDetails> {
 
                       OrderRow(
                         title: 'Owner',
-                        value: 'Oni Priyandika',
+                        value: owner ?? "owner",
                       ),
                       OrderRow(
                         title: 'Phone',
-                        value: '085923940012',
+                        value: phone ?? "phone",
                       ),
 
                       Divider(
@@ -170,20 +178,20 @@ class _OrderDetailsState extends State<OrderDetails> {
                         height: 10,
                       ),
                       OrderRow(
-                        title: 'Rent Month',
-                        value: '2 Months',
-                      ),
+                          title: 'Rent Month',
+                          value: '${widget.object['long_rented']} Months'),
                       OrderRow(
                         title: 'Rental Price /month',
-                        value: 'IDR 55.000',
+                        value: 'IDR ${currencyFormat.format(price) ?? 0}',
                       ),
                       OrderRow(
                         title: 'Total Price',
-                        value: 'IDR 110.000',
+                        value:
+                            'IDR ${currencyFormat.format(widget.object['total']) ?? 0}',
                       ),
                       OrderRow(
                         title: 'Phone',
-                        value: '081123456789',
+                        value: widget.object['phone'],
                       ),
                       OrderRow(
                         title: 'Tax',
@@ -202,7 +210,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                       OrderRow(
                         title: 'Total',
-                        value: 'IDR 115.475.00',
+                        value:
+                            'IDR ${currencyFormat.format(widget.object['total'] + (widget.object['total'] * 0.1)) ?? 0}',
                         isTotal: true,
                       )
                     ],

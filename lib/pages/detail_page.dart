@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:golekos/pages/booking_info.dart';
@@ -5,8 +6,8 @@ import 'package:golekos/theme.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage(this.product);
-
+  const DetailPage(this.product, {this.user});
+  final User user;
   final product;
 
   @override
@@ -61,11 +62,14 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 onTap: () {
-                  var route = MaterialPageRoute(builder: (_) {
-                    return BookingInfo(widget.product);
-                  });
-
-                  Navigator.of(context).push(route);
+                  if (widget.user.email == null) {
+                    return 'please';
+                  } else {
+                    var route = MaterialPageRoute(builder: (_) {
+                      return BookingInfo(widget.product);
+                    });
+                    Navigator.of(context).push(route);
+                  }
                 },
               ),
             ),
