@@ -19,10 +19,10 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   String paymentSelected = 'onsite';
   String img = "https://via.placeholder.com/150";
-  String kostName = "";
-  String type = "";
-  String owner = "";
-  String phone = "";
+  String kostName = "Product name";
+  String type = "Product type";
+  String owner = "Product owner";
+  String phone = "Product owner phone";
   int price = 0;
   selectAPayment(value) {
     switch (paymentSelect) {
