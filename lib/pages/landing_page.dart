@@ -63,14 +63,14 @@ class LandingPage extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 90,
+                height: 50,
               ),
 
               // Golekos logo
               Image.asset(
                 'assets/images/golekos_logo.png',
-                width: 327.61,
-                height: 225,
+                width: 327,
+                height: 215,
               ),
 
               SizedBox(
@@ -117,7 +117,7 @@ class LandingPage extends StatelessWidget {
 
               // Login button
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 97),
+                padding: const EdgeInsets.only(left: 90),
                 child: Row(
                   children: [
                     Text(
@@ -126,7 +126,7 @@ class LandingPage extends StatelessWidget {
                           fontSize: 15, color: Color(0xff000000)),
                     ),
                     SizedBox(
-                      width: 3,
+                      width: 1,
                     ),
                     TextButton(
                       onPressed: () {
