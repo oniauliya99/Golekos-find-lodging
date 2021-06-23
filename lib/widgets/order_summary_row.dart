@@ -35,11 +35,17 @@ class OrderRow extends StatelessWidget {
                     Container(
                       child: IconButton(
                         onPressed: () {
-                          messageDialog(context,
-                              icon: 'Icons.info',
-                              title: 'Pay your bill',
-                              message:
-                                  'Please pay before using and call the number listed to confirm your payment');
+                          (value == false)
+                              ? messageDialog(context,
+                                  icon: 'Icons.info',
+                                  title: 'Pay your bill',
+                                  message:
+                                      'Please pay before using and call the number listed to confirm your payment')
+                              : messageDialog(context,
+                                  icon: 'Icons.info',
+                                  title: 'Already Paid',
+                                  message:
+                                      'You have paid this bill, hope you enjoy your trip.');
                         },
                         icon: Icon(Icons.info_outline),
                         color: Colors.grey.withOpacity(0.5),
