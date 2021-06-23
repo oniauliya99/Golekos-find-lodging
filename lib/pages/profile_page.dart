@@ -1,14 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:golekos/services/auth_services.dart';
 import 'package:golekos/services/db_services.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/alert_logout.dart';
-import 'package:golekos/wrapper.dart';
 import '../widgets/card_tile.dart';
-import '../models/product.dart';
-import 'login_page.dart';
 
 class Profile extends StatefulWidget {
   final User user;

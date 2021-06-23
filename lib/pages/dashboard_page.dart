@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:golekos/pages/login_page.dart';
-import 'package:golekos/services/auth_services.dart';
 import 'package:golekos/theme.dart';
 import 'package:golekos/widgets/list_boarding_houses.dart';
 import 'package:firebase_auth/firebase_auth.dart';
