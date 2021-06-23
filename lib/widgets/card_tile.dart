@@ -16,7 +16,6 @@ class CardTile extends StatefulWidget {
 }
 
 class _CardTileState extends State<CardTile> {
-  String kostName;
   String imageUrl;
 
   @override
@@ -24,7 +23,6 @@ class _CardTileState extends State<CardTile> {
     super.initState();
     getKost(widget.object['kostID']).then((value) {
       setState(() {
-        kostName = value.name;
         imageUrl = value.imageUrl;
       });
     });
@@ -79,7 +77,7 @@ class _CardTileState extends State<CardTile> {
             ),
           ),
           title: Text(
-            kostName ?? 'no name',
+            '#${widget.object['orderID']}' ?? 'no name',
             style: orderBold.copyWith(fontSize: 16, color: Color(0xff181818)),
             overflow: TextOverflow.ellipsis,
           ),
