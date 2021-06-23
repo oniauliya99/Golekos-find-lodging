@@ -100,7 +100,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                       // Order Summary Section
 
                       OrderSummaryDetails(
-                          data: data, currencyFormat: currencyFormat),
+                          data: data,
+                          currencyFormat: currencyFormat,
+                          messageDialog: messageDialog),
 
                       SizedBox(
                         height: 20,
@@ -428,6 +430,46 @@ class _OrderDetailsState extends State<OrderDetails> {
                 )
               ],
             ),
+          );
+        });
+  }
+
+  // Your information message
+
+  Future<dynamic> messageDialog(BuildContext context,
+      {@required String icon, String title, message}) {
+    return showDialog(
+        context: (context),
+        builder: (_) {
+          return AlertDialog(
+            title: Row(
+              children: [
+                Icon(
+                  Icons.info,
+                  size: 18,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Text(
+                  title,
+                  style: orderBold.copyWith(
+                      fontSize: 14, color: Colors.blueAccent.withOpacity(0.8)),
+                ),
+              ],
+            ),
+            content: Text(
+              message,
+              style: orderRegular.copyWith(fontSize: 15, color: Colors.grey),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Done'))
+            ],
           );
         });
   }

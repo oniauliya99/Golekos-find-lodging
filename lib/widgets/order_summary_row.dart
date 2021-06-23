@@ -6,12 +6,14 @@ class OrderRow extends StatelessWidget {
       {this.title,
       this.value,
       this.isTotal = false,
-      this.isPaymentStatus = false});
+      this.isPaymentStatus = false,
+      this.messageDialog});
 
   String title;
   var value;
   bool isTotal;
   bool isPaymentStatus;
+  Function messageDialog;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,11 @@ class OrderRow extends StatelessWidget {
                     Container(
                       child: IconButton(
                         onPressed: () {
-                          payInfo(context);
+                          messageDialog(context,
+                              icon: 'Icons.info',
+                              title: 'Pay your bill',
+                              message:
+                                  'Please pay before using and call the number listed to confirm your payment');
                         },
                         icon: Icon(Icons.info_outline),
                         color: Colors.grey.withOpacity(0.5),
@@ -69,42 +75,5 @@ class OrderRow extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<dynamic> payInfo(BuildContext context) {
-    return showDialog(
-        context: (context),
-        builder: (_) {
-          return AlertDialog(
-            title: Row(
-              children: [
-                Icon(
-                  Icons.info,
-                  size: 18,
-                  color: Colors.blue,
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  'Pay your bill',
-                  style: orderBold.copyWith(
-                      fontSize: 14, color: Colors.blueAccent.withOpacity(0.8)),
-                ),
-              ],
-            ),
-            content: Text(
-              'Please pay before using and call the number listed to confirm your payment',
-              style: orderRegular.copyWith(fontSize: 15, color: Colors.grey),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Done'))
-            ],
-          );
-        });
   }
 }
