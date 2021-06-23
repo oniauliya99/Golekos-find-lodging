@@ -185,6 +185,32 @@ class _DashboardState extends State<Dashboard> {
                       removeTop: true,
                       child: FutureBuilder(
                         builder: (context, snap) {
+                          if (snap.hasError) {
+                            return Center(
+                              child: Text(
+                                  'Failed to load transaction data, try again'),
+                            );
+                          } else if (snap.data != null) {
+                            var docLength = snap.data.length;
+                            if (docLength == 0) {
+                              return Center(
+                                child: Column(
+                                  children: [
+                                    Text('Product not available right now'),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          setState(() {});
+                                        },
+                                        child: Text('Refresh Pages'))
+                                  ],
+                                ),
+                              );
+                            }
+                          }
+
                           if (snap.connectionState == ConnectionState.done) {
                             return ListView.builder(
                               itemCount: snap.data?.length ?? 0,
