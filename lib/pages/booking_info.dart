@@ -20,6 +20,7 @@ class BookingInfo extends StatefulWidget {
 
 class _BookingInfoState extends State<BookingInfo> {
   int totalPay = 0;
+  final _formKey = GlobalKey<FormState>();
 
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -234,23 +235,33 @@ class _BookingInfoState extends State<BookingInfo> {
                       SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        controller: phone,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(20),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            // borderSide:
-                            //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                      Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: phone,
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Text is empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              // borderSide:
+                              //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                            ),
                           ),
+                          maxLines: 1,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          keyboardType: TextInputType.phone,
+                          style: orderRegular.copyWith(
+                              fontSize: 14,
+                              color: Colors.black.withOpacity(0.5)),
                         ),
-                        maxLines: 1,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        keyboardType: TextInputType.phone,
-                        style: orderRegular.copyWith(
-                            fontSize: 14, color: Colors.black.withOpacity(0.5)),
                       ),
                     ],
                   ),
@@ -302,37 +313,39 @@ class _BookingInfoState extends State<BookingInfo> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
                     onPressed: () async {
-                      // Generate order number
-                      int min = 100000;
-                      int max = 999999;
-                      var randomizer = new Random();
-                      var rNum = min + randomizer.nextInt(max - min);
+                      if (_formKey.currentState.validate()) {
+                        // Generate order number
+                        int min = 100000;
+                        int max = 999999;
+                        var randomizer = new Random();
+                        var rNum = min + randomizer.nextInt(max - min);
 
-                      var orders = {
-                        'orderID': '$rNum',
-                        'kostID': widget.product['kost_id'],
-                        'userID': user.uid,
-                        'customer_name': name.text,
-                        'phone': phone.text,
-                        'email': email.text,
-                        'long_rented': longStay.text,
-                        'booking_date': DateTime.now().toString(),
-                        'total': widget.product['kost_price_per_month'] *
-                            int.tryParse(longStay.text),
-                        'paid': false,
-                        'payment': 'unregistered',
-                        'createdAt': DateTime.now().toString()
-                      };
+                        var orders = {
+                          'orderID': '$rNum',
+                          'kostID': widget.product['kost_id'],
+                          'userID': user.uid,
+                          'customer_name': name.text,
+                          'phone': phone.text,
+                          'email': email.text,
+                          'long_rented': longStay.text,
+                          'booking_date': DateTime.now().toString(),
+                          'total': widget.product['kost_price_per_month'] *
+                              int.tryParse(longStay.text),
+                          'paid': false,
+                          'payment': 'unregistered',
+                          'createdAt': DateTime.now().toString()
+                        };
 
-                      DatabaseServices.addOrder(orders).then((_) {
-                        var route = MaterialPageRoute(builder: (_) {
-                          return ButtomBar(user: user);
+                        DatabaseServices.addOrder(orders).then((_) {
+                          var route = MaterialPageRoute(builder: (_) {
+                            return ButtomBar(user: user);
+                          });
+
+                          print('Success');
+                          Navigator.of(context)
+                              .pushAndRemoveUntil(route, (route) => false);
                         });
-
-                        print('Success');
-                        Navigator.of(context)
-                            .pushAndRemoveUntil(route, (route) => false);
-                      });
+                      }
                     },
                     child: Text(
                         'Pay Rp. ${currencyFormat.format(totalPay)} + Tax 10%'),
