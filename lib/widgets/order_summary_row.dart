@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:golekos/theme.dart';
+import 'dialog.dart';
 
 class OrderRow extends StatelessWidget {
   OrderRow(
       {this.title,
       this.value,
       this.isTotal = false,
-      this.isPaymentStatus = false,
-      this.messageDialog});
+      this.isPaymentStatus = false});
 
   String title;
   var value;
   bool isTotal;
   bool isPaymentStatus;
-  Function messageDialog;
 
   @override
   Widget build(BuildContext context) {

@@ -9,12 +9,10 @@ class OrderSummaryDetails extends StatefulWidget {
     Key key,
     @required this.data,
     @required this.currencyFormat,
-    @required this.messageDialog,
   }) : super(key: key);
 
   final Map<String, dynamic> data;
   final NumberFormat currencyFormat;
-  final Function messageDialog;
 
   @override
   _OrderSummaryDetailsState createState() => _OrderSummaryDetailsState();
@@ -161,7 +159,6 @@ class _OrderSummaryDetailsState extends State<OrderSummaryDetails> {
             title: 'Payment Status',
             value: widget.data['paid'],
             isPaymentStatus: true,
-            messageDialog: widget.messageDialog,
           ),
           Divider(
             color: Color(0xffd8d8d8),
