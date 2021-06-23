@@ -20,15 +20,17 @@ class _DashboardState extends State<Dashboard> {
   var singleProduct;
   int productRadius = 0;
 
-  TextEditingController searchProduct = TextEditingController();
+  TextEditingController search = TextEditingController();
+
+  String searchProduct = '';
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future getAllProduct([String search = '']) async {
-    var result = await Product.getProduct(name: search);
+  Future<List<Product>> getAllProduct() async {
+    var result = await Product.getProduct(name: searchProduct);
     return result;
   }
 
@@ -112,8 +114,7 @@ class _DashboardState extends State<Dashboard> {
                     // Search product
 
                     TextField(
-                      controller: searchProduct,
-                      onChanged: getAllProduct,
+                      controller: search,
                       decoration: InputDecoration(
                         // textfield hint
 
@@ -121,7 +122,11 @@ class _DashboardState extends State<Dashboard> {
                         hintStyle: orderLight.copyWith(
                             fontSize: 16, color: Color(0xffA5A5A5)),
                         suffixIcon: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              searchProduct = search.text;
+                            });
+                          },
                           icon: Icon(Icons.search_rounded),
                           color: Color(0xffA5A5A5),
                           iconSize: 20,
