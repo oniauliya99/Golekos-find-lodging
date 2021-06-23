@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:golekos/services/auth_services.dart';
 import 'package:golekos/services/db_services.dart';
 import 'package:golekos/theme.dart';
+import 'package:golekos/widgets/alert_logout.dart';
 import 'package:golekos/wrapper.dart';
 import '../widgets/card_tile.dart';
 import '../models/product.dart';
@@ -190,11 +191,7 @@ class _ProfileState extends State<Profile> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      AuthService.signOut();
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) {
-                        return LoginPage();
-                      }), (route) => false);
+                      showAlertDialog(context);
                     }),
               ],
             ),
@@ -207,13 +204,16 @@ class _ProfileState extends State<Profile> {
         ],
       ),
     );
-  }
+    // set up the buttons
 
-  Image socialButton(String imgUrl) {
-    return Image.asset(
-      imgUrl,
-      width: 40,
-      height: 40,
-    );
+    // set up the AlertDialog
   }
+}
+
+Image socialButton(String imgUrl) {
+  return Image.asset(
+    imgUrl,
+    width: 40,
+    height: 40,
+  );
 }
