@@ -1,14 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:golekos/models/product.dart';
+import 'package:golekos/services/db_services.dart';
 import 'package:golekos/theme.dart';
-import 'package:golekos/widgets/order_summary_row.dart';
+import '../widgets/order-details/order_details.dart';
 import 'package:intl/intl.dart';
 
 enum payment { transfer, onsite }
 
 class OrderDetails extends StatefulWidget {
-  OrderDetails({this.object});
+  OrderDetails({this.id, this.object});
 
+  final id;
   final Map<String, dynamic> object;
   @override
   _OrderDetailsState createState() => _OrderDetailsState();
@@ -16,324 +19,213 @@ class OrderDetails extends StatefulWidget {
 
 class _OrderDetailsState extends State<OrderDetails> {
   payment paymentSelect = payment.onsite;
+  String paymentSelected = 'Onsite';
 
-  String paymentSelected = 'onsite';
-  String img = "https://via.placeholder.com/150";
-  String kostName = "Product name";
-  String type = "Product type";
-  String owner = "Product owner";
-  String phone = "Product owner phone";
-  int price = 0;
   selectAPayment(value) {
     switch (paymentSelect) {
       case payment.transfer:
-        paymentSelected = 'transfer';
-        setState(() {});
+        paymentSelected = 'Bank Transfer';
+        updatePaymentData(paymentSelected);
         break;
       case payment.onsite:
-        paymentSelected = 'onsite';
-        setState(() {});
+        paymentSelected = 'Onsite';
+        updatePaymentData(paymentSelected);
         break;
     }
+    setState(() {});
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getKost(widget.object['kostID']).then((value) {
-      setState(() {
-        kostName = value.name;
-        img = value.imageUrl;
-        type = value.type;
-        owner = value.owner;
-        phone = value.ownerPhone;
-        price = value.price;
-      });
-    });
-  }
-
-  Future<Product> getKost(int id) async {
-    var productById = await Product.getProductById(id);
-    return productById;
+  Future<void> updatePaymentData(String payment) {
+    return orders
+        .doc(widget.id)
+        .update({
+          'payment': payment,
+        })
+        .then((value) => print('Payment Updated'))
+        .catchError((error) => print('Payment update failed: $error'));
   }
 
   @override
   Widget build(BuildContext context) {
     final currencyFormat = NumberFormat("#,##0", "en_US");
+
     return Scaffold(
       backgroundColor: Color(0xffF2F4F4),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-            child: Column(
-              children: [
-                // Title Order Section
+            child: FutureBuilder<DocumentSnapshot>(
+              future: orders.doc(widget.id).get(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Failed to load order'),
+                  );
+                }
 
-                AppBar(
-                  centerTitle: true,
-                  title: Text(
-                    'ORDER #${widget.object['orderID']}',
-                    style: orderBold.copyWith(color: orderBlack),
-                  ),
-                  leading: IconButton(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      color: orderGrey,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                ),
-
-                SizedBox(
-                  height: 35,
-                ),
-
-                // Order Summary Section
-
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                if (snapshot.connectionState == ConnectionState.done) {
+                  Map<String, dynamic> data =
+                      snapshot.data.data() as Map<String, dynamic>;
+                  return Column(
                     children: [
-                      Text(
-                        'Order summary',
-                        style: orderBold.copyWith(color: orderBlack),
-                      ),
+                      // Title Order Section
 
-                      SizedBox(
-                        height: 10,
-                      ),
-
-                      // Kost image and details
-
-                      Row(
-                        children: [
-                          Image.network(
-                            img ?? 'https://via.placeholder.com/150',
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
+                      AppBar(
+                        centerTitle: true,
+                        title: Text(
+                          'ORDER #${data['orderID']}',
+                          style: orderBold.copyWith(color: orderBlack),
+                        ),
+                        leading: IconButton(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: orderGrey,
                           ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 200,
-                                child: Text(
-                                  kostName ?? "name",
-                                  maxLines: 4,
-                                  style:
-                                      orderRegular.copyWith(color: orderBlack),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 2,
-                              ),
-                              Text(
-                                type ?? "type",
-                                style: orderLight.copyWith(
-                                    fontSize: 12, color: Color(0xffA5A5A5)),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-
-                      SizedBox(
-                        height: 22,
-                      ),
-                      Divider(
-                        color: Color(0xffd8d8d8),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-
-                      // Order Details
-
-                      OrderRow(
-                        title: 'Owner',
-                        value: owner ?? "owner",
-                      ),
-                      OrderRow(
-                        title: 'Phone',
-                        value: phone ?? "phone",
-                      ),
-
-                      Divider(
-                        color: Color(0xffd8d8d8),
-                      ),
-
-                      SizedBox(
-                        height: 10,
-                      ),
-                      OrderRow(
-                          title: 'Rent Month',
-                          value: '${widget.object['long_rented']} Months'),
-                      OrderRow(
-                        title: 'Rental Price /month',
-                        value: 'IDR ${currencyFormat.format(price) ?? 0}',
-                      ),
-                      OrderRow(
-                        title: 'Total Price',
-                        value:
-                            'IDR ${currencyFormat.format(widget.object['total']) ?? 0}',
-                      ),
-                      OrderRow(
-                        title: 'Phone',
-                        value: widget.object['phone'],
-                      ),
-                      OrderRow(
-                        title: 'Tax',
-                        value: '10%',
-                      ),
-                      OrderRow(
-                        title: 'Payment Status',
-                        value: 'Not Yet Paid',
-                        isPaymentStatus: true,
-                      ),
-                      Divider(
-                        color: Color(0xffd8d8d8),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      OrderRow(
-                        title: 'Total',
-                        value:
-                            'IDR ${currencyFormat.format(widget.object['total'] + (widget.object['total'] * 0.1)) ?? 0}',
-                        isTotal: true,
-                      )
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                ),
-
-                SizedBox(
-                  height: 20,
-                ),
-
-                // Payment Section
-
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Payment Method',
-                        style: orderBold.copyWith(color: Color(0xff000000)),
-                      ),
-
-                      SizedBox(
-                        height: 10,
-                      ),
-
-                      TextButton(
                           onPressed: () {
-                            choosePaymentDialog(context);
+                            Navigator.of(context).pop();
                           },
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/payment/visa.png',
-                                width: 43,
-                                height: 26,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    (paymentSelected == 'onsite')
-                                        ? 'On site'
-                                        : 'Bank transfer',
-                                    style: orderMedium.copyWith(
-                                        fontSize: 12, color: Color(0xff000000)),
-                                  ),
-                                  Text(
-                                    (paymentSelected == 'onsite')
-                                        ? 'No details needed'
-                                        : '••••   ••••   ••••   1996',
-                                    style: orderSemiBold.copyWith(
-                                        fontSize: 10, color: Color(0xff000000)),
-                                  ),
-                                ],
-                              ),
-                              Spacer(),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Color(0xff8C8C8C),
-                              ),
-                            ],
-                          ),
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                          )),
-
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Divider(
-                        color: Color(0xffd4d4d4),
-                      ),
-                      SizedBox(
-                        height: 10,
+                        ),
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
                       ),
 
-                      // Promo code
+                      SizedBox(
+                        height: 35,
+                      ),
+
+                      // Order Summary Section
+
+                      OrderSummaryDetails(
+                          data: data, currencyFormat: currencyFormat),
+
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      // Payment Section
 
                       Container(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            paymentInformation(context);
-                          },
-                          child: Text(
-                              (widget.object['payment'] == 'unregistered')
-                                  ? 'PLEASE CHOOSE YOUR PAYMENT'
-                                  : 'PAY'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xffFFC33A),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 16, horizontal: 20),
-                            textStyle: orderMedium.copyWith(
-                                fontSize: 12, color: Color(0xff414B5A)),
-                            elevation: 0,
-                            shadowColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Payment Method',
+                              style:
+                                  orderBold.copyWith(color: Color(0xff000000)),
                             ),
-                          ),
+
+                            SizedBox(
+                              height: 10,
+                            ),
+
+                            TextButton(
+                                onPressed: () {
+                                  choosePaymentDialog(context);
+                                },
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/payment/visa.png',
+                                      width: 43,
+                                      height: 26,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          (paymentSelected == 'onsite')
+                                              ? 'On site'
+                                              : 'Bank transfer',
+                                          style: orderMedium.copyWith(
+                                              fontSize: 12,
+                                              color: Color(0xff000000)),
+                                        ),
+                                        Text(
+                                          (paymentSelected == 'onsite')
+                                              ? 'No details needed'
+                                              : '••••   ••••   ••••   1996',
+                                          style: orderSemiBold.copyWith(
+                                              fontSize: 10,
+                                              color: Color(0xff000000)),
+                                        ),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Color(0xff8C8C8C),
+                                    ),
+                                  ],
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                )),
+
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Divider(
+                              color: Color(0xffd4d4d4),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+
+                            // Promo code
+
+                            Container(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  paymentInformation(context);
+                                },
+                                child: Text(
+                                    (widget.object['payment'] == 'unregistered')
+                                        ? 'PLEASE CHOOSE YOUR PAYMENT'
+                                        : 'PAY'),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xffFFC33A),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 16, horizontal: 20),
+                                  textStyle: orderMedium.copyWith(
+                                      fontSize: 12, color: Color(0xff414B5A)),
+                                  elevation: 0,
+                                  shadowColor: Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
                         ),
                       ),
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                ),
 
-                SizedBox(
-                  height: 25,
-                ),
-              ],
+                      SizedBox(
+                        height: 25,
+                      ),
+                    ],
+                  );
+                }
+
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           ),
         ),

@@ -5,9 +5,11 @@ import '../theme.dart';
 import '../models/product.dart';
 
 class CardTile extends StatefulWidget {
-  CardTile({this.object, this.onDelete});
-  final Function onDelete;
+  CardTile({this.id, this.object, this.onDelete});
+
+  final id;
   final Map<String, dynamic> object;
+  final Function onDelete;
 
   @override
   _CardTileState createState() => _CardTileState();
@@ -40,6 +42,7 @@ class _CardTileState extends State<CardTile> {
           onTap: () {
             MaterialPageRoute route = MaterialPageRoute(
                 builder: (_) => OrderDetails(
+                      id: widget.id,
                       object: widget.object,
                     ));
             Navigator.push(context, route);

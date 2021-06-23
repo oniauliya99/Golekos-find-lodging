@@ -143,6 +143,7 @@ class _ProfileState extends State<Profile> {
                                 doc.data() as Map<String, dynamic>;
 
                             return CardTile(
+                              id: doc.id,
                               object: data,
                               onDelete: () {
                                 orders.doc(doc.id).delete();

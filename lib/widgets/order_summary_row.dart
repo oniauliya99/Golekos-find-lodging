@@ -9,7 +9,7 @@ class OrderRow extends StatelessWidget {
       this.isPaymentStatus = false});
 
   String title;
-  String value;
+  var value;
   bool isTotal;
   bool isPaymentStatus;
 
@@ -30,21 +30,28 @@ class OrderRow extends StatelessWidget {
               ? Row(
                   // mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        payInfo(context);
-                      },
-                      icon: Icon(Icons.info_outline),
-                      color: Colors.grey.withOpacity(0.5),
-                      padding: EdgeInsets.zero,
-                      alignment: Alignment.centerRight,
-                      iconSize: 20,
+                    Container(
+                      child: IconButton(
+                        onPressed: () {
+                          payInfo(context);
+                        },
+                        icon: Icon(Icons.info_outline),
+                        color: Colors.grey.withOpacity(0.5),
+                        padding: EdgeInsets.zero,
+                        alignment: Alignment.centerRight,
+                        iconSize: 20,
+                        constraints: BoxConstraints(),
+                      ),
                     ),
                     SizedBox(
                       width: 8,
                     ),
                     Text(
-                      value,
+                      (value == false)
+                          ? 'Not Yet Paid'
+                          : (value == true)
+                              ? 'Payment success'
+                              : value,
                       style: (isTotal)
                           ? orderBold.copyWith(color: orderGreen)
                           : ((isPaymentStatus)
