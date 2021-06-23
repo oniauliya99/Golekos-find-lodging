@@ -20,7 +20,10 @@ class BookingInfo extends StatefulWidget {
 
 class _BookingInfoState extends State<BookingInfo> {
   int totalPay = 0;
-  final _formKey = GlobalKey<FormState>();
+  final _emailKey = GlobalKey<FormState>();
+  final _countKey = GlobalKey<FormState>();
+  final _phonemKey = GlobalKey<FormState>();
+  final _custKey = GlobalKey<FormState>();
 
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -152,20 +155,30 @@ class _BookingInfoState extends State<BookingInfo> {
                       SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        controller: email,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(20),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            // borderSide:
-                            //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                      Form(
+                        key: _emailKey,
+                        child: TextFormField(
+                          controller: email,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              // borderSide:
+                              //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                            ),
                           ),
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Email is empty';
+                            }
+                            return null;
+                          },
+                          maxLines: 1,
+                          keyboardType: TextInputType.emailAddress,
+                          style: orderRegular.copyWith(
+                              fontSize: 14,
+                              color: Colors.black.withOpacity(0.5)),
                         ),
-                        maxLines: 1,
-                        keyboardType: TextInputType.emailAddress,
-                        style: orderRegular.copyWith(
-                            fontSize: 14, color: Colors.black.withOpacity(0.5)),
                       ),
                     ],
                   ),
@@ -189,29 +202,39 @@ class _BookingInfoState extends State<BookingInfo> {
                       SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        controller: longStay,
-                        decoration: InputDecoration(
-                          suffix: Text(
-                            'Month',
-                            style: orderRegular.copyWith(
-                                fontSize: 14, color: Color(0xff979797)),
+                      Form(
+                        key: _countKey,
+                        child: TextFormField(
+                          controller: longStay,
+                          decoration: InputDecoration(
+                            suffix: Text(
+                              'Month',
+                              style: orderRegular.copyWith(
+                                  fontSize: 14, color: Color(0xff979797)),
+                            ),
+                            contentPadding: EdgeInsets.all(20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              // borderSide:
+                              //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                            ),
                           ),
-                          contentPadding: EdgeInsets.all(20),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            // borderSide:
-                            //     BorderSide(color: Color(0xffDCDCDC), width: 3),
-                          ),
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Text is empty';
+                            }
+                            return null;
+                          },
+                          maxLines: 1,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          keyboardType: TextInputType.number,
+                          style: orderRegular.copyWith(
+                              fontSize: 14,
+                              color: Colors.black.withOpacity(0.5)),
+                          onChanged: defaultLongStay,
                         ),
-                        maxLines: 1,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        keyboardType: TextInputType.number,
-                        style: orderRegular.copyWith(
-                            fontSize: 14, color: Colors.black.withOpacity(0.5)),
-                        onChanged: defaultLongStay,
                       ),
                     ],
                   ),
@@ -236,12 +259,12 @@ class _BookingInfoState extends State<BookingInfo> {
                         height: 10,
                       ),
                       Form(
-                        key: _formKey,
+                        key: _phonemKey,
                         child: TextFormField(
                           controller: phone,
                           validator: (text) {
                             if (text == null || text.isEmpty) {
-                              return 'Text is empty';
+                              return 'Phone is empty';
                             }
                             return null;
                           },
@@ -286,20 +309,30 @@ class _BookingInfoState extends State<BookingInfo> {
                       SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        controller: name,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(20),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            // borderSide:
-                            //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                      Form(
+                        key: _custKey,
+                        child: TextFormField(
+                          controller: name,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              // borderSide:
+                              //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                            ),
                           ),
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Text is empty';
+                            }
+                            return null;
+                          },
+                          maxLines: 1,
+                          keyboardType: TextInputType.text,
+                          style: orderRegular.copyWith(
+                              fontSize: 14,
+                              color: Colors.black.withOpacity(0.5)),
                         ),
-                        maxLines: 1,
-                        keyboardType: TextInputType.text,
-                        style: orderRegular.copyWith(
-                            fontSize: 14, color: Colors.black.withOpacity(0.5)),
                       ),
                     ],
                   ),
@@ -313,7 +346,14 @@ class _BookingInfoState extends State<BookingInfo> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
                     onPressed: () async {
-                      if (_formKey.currentState.validate()) {
+                      final form1 = _emailKey.currentState;
+                      final form2 = _countKey.currentState;
+                      final form3 = _phonemKey.currentState;
+                      final form4 = _custKey.currentState;
+                      if (form1.validate() &&
+                          form2.validate() &&
+                          form3.validate() &&
+                          form4.validate()) {
                         // Generate order number
                         int min = 100000;
                         int max = 999999;
