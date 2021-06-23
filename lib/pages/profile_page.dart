@@ -186,13 +186,15 @@ class _ProfileState extends State<Profile> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 IconButton(
-                    icon: Icon(
-                      Icons.logout,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      showAlertDialog(context);
-                    }),
+                  icon: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    showAlertDialog(context);
+                  },
+                  tooltip: 'Logout this session',
+                ),
               ],
             ),
           ),
