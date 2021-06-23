@@ -20,6 +20,10 @@ class BookingInfo extends StatefulWidget {
 
 class _BookingInfoState extends State<BookingInfo> {
   int totalPay = 0;
+  final _emailKey = GlobalKey<FormState>();
+  final _countKey = GlobalKey<FormState>();
+  final _phonemKey = GlobalKey<FormState>();
+  final _custKey = GlobalKey<FormState>();
 
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -151,20 +155,30 @@ class _BookingInfoState extends State<BookingInfo> {
                       SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        controller: email,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(20),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            // borderSide:
-                            //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                      Form(
+                        key: _emailKey,
+                        child: TextFormField(
+                          controller: email,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              // borderSide:
+                              //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                            ),
                           ),
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Email is empty';
+                            }
+                            return null;
+                          },
+                          maxLines: 1,
+                          keyboardType: TextInputType.emailAddress,
+                          style: orderRegular.copyWith(
+                              fontSize: 14,
+                              color: Colors.black.withOpacity(0.5)),
                         ),
-                        maxLines: 1,
-                        keyboardType: TextInputType.emailAddress,
-                        style: orderRegular.copyWith(
-                            fontSize: 14, color: Colors.black.withOpacity(0.5)),
                       ),
                     ],
                   ),
@@ -188,29 +202,39 @@ class _BookingInfoState extends State<BookingInfo> {
                       SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        controller: longStay,
-                        decoration: InputDecoration(
-                          suffix: Text(
-                            'Month',
-                            style: orderRegular.copyWith(
-                                fontSize: 14, color: Color(0xff979797)),
+                      Form(
+                        key: _countKey,
+                        child: TextFormField(
+                          controller: longStay,
+                          decoration: InputDecoration(
+                            suffix: Text(
+                              'Month',
+                              style: orderRegular.copyWith(
+                                  fontSize: 14, color: Color(0xff979797)),
+                            ),
+                            contentPadding: EdgeInsets.all(20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              // borderSide:
+                              //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                            ),
                           ),
-                          contentPadding: EdgeInsets.all(20),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            // borderSide:
-                            //     BorderSide(color: Color(0xffDCDCDC), width: 3),
-                          ),
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Text is empty';
+                            }
+                            return null;
+                          },
+                          maxLines: 1,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          keyboardType: TextInputType.number,
+                          style: orderRegular.copyWith(
+                              fontSize: 14,
+                              color: Colors.black.withOpacity(0.5)),
+                          onChanged: defaultLongStay,
                         ),
-                        maxLines: 1,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        keyboardType: TextInputType.number,
-                        style: orderRegular.copyWith(
-                            fontSize: 14, color: Colors.black.withOpacity(0.5)),
-                        onChanged: defaultLongStay,
                       ),
                     ],
                   ),
@@ -234,23 +258,33 @@ class _BookingInfoState extends State<BookingInfo> {
                       SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        controller: phone,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(20),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            // borderSide:
-                            //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                      Form(
+                        key: _phonemKey,
+                        child: TextFormField(
+                          controller: phone,
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Phone is empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              // borderSide:
+                              //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                            ),
                           ),
+                          maxLines: 1,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          keyboardType: TextInputType.phone,
+                          style: orderRegular.copyWith(
+                              fontSize: 14,
+                              color: Colors.black.withOpacity(0.5)),
                         ),
-                        maxLines: 1,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        keyboardType: TextInputType.phone,
-                        style: orderRegular.copyWith(
-                            fontSize: 14, color: Colors.black.withOpacity(0.5)),
                       ),
                     ],
                   ),
@@ -275,20 +309,30 @@ class _BookingInfoState extends State<BookingInfo> {
                       SizedBox(
                         height: 10,
                       ),
-                      TextFormField(
-                        controller: name,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(20),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            // borderSide:
-                            //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                      Form(
+                        key: _custKey,
+                        child: TextFormField(
+                          controller: name,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              // borderSide:
+                              //     BorderSide(color: Color(0xffDCDCDC), width: 3),
+                            ),
                           ),
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Text is empty';
+                            }
+                            return null;
+                          },
+                          maxLines: 1,
+                          keyboardType: TextInputType.text,
+                          style: orderRegular.copyWith(
+                              fontSize: 14,
+                              color: Colors.black.withOpacity(0.5)),
                         ),
-                        maxLines: 1,
-                        keyboardType: TextInputType.text,
-                        style: orderRegular.copyWith(
-                            fontSize: 14, color: Colors.black.withOpacity(0.5)),
                       ),
                     ],
                   ),
@@ -302,37 +346,46 @@ class _BookingInfoState extends State<BookingInfo> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
                     onPressed: () async {
-                      // Generate order number
-                      int min = 100000;
-                      int max = 999999;
-                      var randomizer = new Random();
-                      var rNum = min + randomizer.nextInt(max - min);
+                      final form1 = _emailKey.currentState;
+                      final form2 = _countKey.currentState;
+                      final form3 = _phonemKey.currentState;
+                      final form4 = _custKey.currentState;
+                      if (form1.validate() &&
+                          form2.validate() &&
+                          form3.validate() &&
+                          form4.validate()) {
+                        // Generate order number
+                        int min = 100000;
+                        int max = 999999;
+                        var randomizer = new Random();
+                        var rNum = min + randomizer.nextInt(max - min);
 
-                      var orders = {
-                        'orderID': '$rNum',
-                        'kostID': widget.product['kost_id'],
-                        'userID': user.uid,
-                        'customer_name': name.text,
-                        'phone': phone.text,
-                        'email': email.text,
-                        'long_rented': longStay.text,
-                        'booking_date': DateTime.now().toString(),
-                        'total': widget.product['kost_price_per_month'] *
-                            int.tryParse(longStay.text),
-                        'paid': false,
-                        'payment': 'unregistered',
-                        'createdAt': DateTime.now().toString()
-                      };
+                        var orders = {
+                          'orderID': '$rNum',
+                          'kostID': widget.product['kost_id'],
+                          'userID': user.uid,
+                          'customer_name': name.text,
+                          'phone': phone.text,
+                          'email': email.text,
+                          'long_rented': longStay.text,
+                          'booking_date': DateTime.now().toString(),
+                          'total': widget.product['kost_price_per_month'] *
+                              int.tryParse(longStay.text),
+                          'paid': false,
+                          'payment': 'unregistered',
+                          'createdAt': DateTime.now().toString()
+                        };
 
-                      DatabaseServices.addOrder(orders).then((_) {
-                        var route = MaterialPageRoute(builder: (_) {
-                          return ButtomBar(user: user);
+                        DatabaseServices.addOrder(orders).then((_) {
+                          var route = MaterialPageRoute(builder: (_) {
+                            return ButtomBar(user: user);
+                          });
+
+                          print('Success');
+                          Navigator.of(context)
+                              .pushAndRemoveUntil(route, (route) => false);
                         });
-
-                        print('Success');
-                        Navigator.of(context)
-                            .pushAndRemoveUntil(route, (route) => false);
-                      });
+                      }
                     },
                     child: Text(
                         'Pay Rp. ${currencyFormat.format(totalPay)} + Tax 10%'),
