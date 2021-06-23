@@ -128,7 +128,13 @@ class _OrderDetailsState extends State<OrderDetails> {
 
                             TextButton(
                                 onPressed: () {
-                                  choosePaymentDialog(context);
+                                  (data['paid'])
+                                      ? messageDialog(context,
+                                          icon: 'Icons.info',
+                                          title: 'Already Paid',
+                                          message:
+                                              'You have paid this bill, hope you enjoy your trip.')
+                                      : choosePaymentDialog(context);
                                 },
                                 child: Row(
                                   children: [
@@ -145,7 +151,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          (paymentSelected == 'onsite')
+                                          (paymentSelected == 'Onsite')
                                               ? 'On site'
                                               : 'Bank transfer',
                                           style: orderMedium.copyWith(
@@ -153,7 +159,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                               color: Color(0xff000000)),
                                         ),
                                         Text(
-                                          (paymentSelected == 'onsite')
+                                          (paymentSelected == 'Onsite')
                                               ? 'No details needed'
                                               : '••••   ••••   ••••   1996',
                                           style: orderSemiBold.copyWith(
@@ -189,21 +195,31 @@ class _OrderDetailsState extends State<OrderDetails> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  (data['payment'] == 'unregistered')
-                                      ? choosePaymentDialog(context)
-                                      : (data['payment'] == 'Bank Transfer')
-                                          ? paymentInformation(context)
-                                          : messageDialog(context,
-                                              icon: 'Icons.info',
-                                              title: 'Notification',
-                                              message:
-                                                  'Make payments directly to the owner of the boarding house, then remind the owner to confirm the payment to the admin.');
+                                  (data['paid'])
+                                      ? messageDialog(context,
+                                          icon: 'Icons.info',
+                                          title: 'Already Paid',
+                                          message:
+                                              'You have paid this bill, hope you enjoy your trip.')
+                                      : (data['payment'] == 'unregistered')
+                                          ? choosePaymentDialog(context)
+                                          : (data['payment'] == 'Bank Transfer')
+                                              ? paymentInformation(context)
+                                              : messageDialog(context,
+                                                  icon: 'Icons.info',
+                                                  title: 'Notification',
+                                                  message:
+                                                      'Make payments directly to the owner of the boarding house, then remind the owner to confirm the payment to the admin.');
                                 },
                                 child: Text((data['payment'] == 'unregistered')
                                     ? 'PLEASE CHOOSE YOUR PAYMENT'
-                                    : 'PAY'),
+                                    : (data['paid'])
+                                        ? 'ORDER COMPLETE'
+                                        : 'PAY'),
                                 style: ElevatedButton.styleFrom(
-                                  primary: Color(0xffFFC33A),
+                                  primary: (data['paid'])
+                                      ? Colors.grey.withOpacity(0.5)
+                                      : Color(0xffFFC33A),
                                   padding: EdgeInsets.symmetric(
                                       vertical: 16, horizontal: 20),
                                   textStyle: orderMedium.copyWith(
