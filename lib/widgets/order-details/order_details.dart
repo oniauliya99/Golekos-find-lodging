@@ -147,7 +147,9 @@ class _OrderSummaryDetailsState extends State<OrderSummaryDetails> {
           ),
           OrderRow(
             title: 'Tax',
-            value: '10%',
+            value:
+                'IDR ${widget.currencyFormat.format(widget.data['total'] * 0.1) ?? 0}' +
+                    ' (10%)',
           ),
           OrderRow(
             title: 'Payment Method',
