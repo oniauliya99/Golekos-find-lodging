@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:golekos/models/product.dart';
 import 'package:golekos/services/db_services.dart';
 import 'package:golekos/theme.dart';
 import '../widgets/order-details/order_details.dart';
 import 'package:intl/intl.dart';
+import 'package:clipboard/clipboard.dart';
 
 enum payment { transfer, onsite }
 
@@ -89,6 +89,24 @@ class _OrderDetailsState extends State<OrderDetails> {
                             Navigator.of(context).pop();
                           },
                         ),
+                        actions: [
+                          IconButton(
+                            onPressed: () {
+                              FlutterClipboard.copy(data['orderID'])
+                                  .then((value) => {
+                                        messageDialog(context,
+                                            icon: 'Icons.info',
+                                            title: 'Copy success',
+                                            message:
+                                                'Order #${data['orderID']} was copied successfully')
+                                      });
+                            },
+                            icon: Icon(Icons.copy),
+                            color: orderGrey,
+                            tooltip: 'Copy this order',
+                            constraints: BoxConstraints(),
+                          )
+                        ],
                         backgroundColor: Colors.transparent,
                         elevation: 0,
                       ),
