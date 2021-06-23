@@ -5,8 +5,6 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
 final CollectionReference orders =
     FirebaseFirestore.instance.collection('orders');
-final CollectionReference payments =
-    FirebaseFirestore.instance.collection('payments');
 
 class DatabaseServices {
   // Order services
