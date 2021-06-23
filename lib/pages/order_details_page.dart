@@ -189,12 +189,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  paymentInformation(context);
+                                  (data['payment'] == 'unregistered')
+                                      ? choosePaymentDialog(context)
+                                      : (data['payment'] == 'Bank Transfer')
+                                          ? paymentInformation(context)
+                                          : messageDialog(context,
+                                              icon: 'Icons.info',
+                                              title: 'Notification',
+                                              message:
+                                                  'Make payments directly to the owner of the boarding house, then remind the owner to confirm the payment to the admin.');
                                 },
-                                child: Text(
-                                    (widget.object['payment'] == 'unregistered')
-                                        ? 'PLEASE CHOOSE YOUR PAYMENT'
-                                        : 'PAY'),
+                                child: Text((data['payment'] == 'unregistered')
+                                    ? 'PLEASE CHOOSE YOUR PAYMENT'
+                                    : 'PAY'),
                                 style: ElevatedButton.styleFrom(
                                   primary: Color(0xffFFC33A),
                                   padding: EdgeInsets.symmetric(
