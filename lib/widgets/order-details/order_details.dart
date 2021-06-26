@@ -127,6 +127,7 @@ class _OrderSummaryDetailsState extends State<OrderSummaryDetails> {
           SizedBox(
             height: 10,
           ),
+          OrderRow(title: 'Customer', value: '${widget.data['customer_name']}'),
           OrderRow(
               title: 'Rent Month',
               value: '${widget.data['long_rented']} Months'),
